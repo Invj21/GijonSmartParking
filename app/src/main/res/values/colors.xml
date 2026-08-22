@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Palette ispirata alla bandiera delle Asturie:
+         campo AZZURRO + Cruz de la Victoria ORO.
+         Primary = blu (colore dominante), Tertiary = oro (la croce).
+         Tengo gli stessi nomi dei token così i temi non vanno toccati. -->
+
+    <!-- Primary: il blu della bandiera -->
+    <color name="brand_primary">#0061A4</color>
+    <color name="brand_on_primary">#FFFFFF</color>
+    <color name="brand_primary_container">#D2E4FF</color>
+    <color name="brand_on_primary_container">#001D36</color>
+
+    <!-- Secondary: un blu-grigio di accompagnamento -->
+    <color name="brand_secondary">#535F70</color>
+    <color name="brand_on_secondary">#FFFFFF</color>
+    <color name="brand_secondary_container">#D7E3F8</color>
+    <color name="brand_on_secondary_container">#101C2B</color>
+
+    <!-- Tertiary: l'oro della Cruz de la Victoria -->
+    <color name="brand_tertiary">#7C5800</color>
+    <color name="brand_on_tertiary">#FFFFFF</color>
+    <color name="brand_tertiary_container">#FFDEA6</color>
+    <color name="brand_on_tertiary_container">#271900</color>
+
+    <color name="brand_error">#BA1A1A</color>
+    <color name="brand_on_error">#FFFFFF</color>
+    <color name="brand_error_container">#FFDAD6</color>
+    <color name="brand_on_error_container">#410002</color>
+
+    <color name="brand_background">#FCFCFF</color>
+    <color name="brand_on_background">#1A1C1E</color>
+    <color name="brand_surface">#FCFCFF</color>
+    <color name="brand_on_surface">#1A1C1E</color>
+    <color name="brand_surface_variant">#DFE2EB</color>
+    <color name="brand_on_surface_variant">#43474E</color>
+    <color name="brand_surface_container">#ECEEF4</color>
+    <color name="brand_surface_container_high">#E6E8EE</color>
+    <color name="brand_outline">#73777F</color>
+
+    <!-- Tema scuro: stesse tinte (blu + oro) ma adattate al fondo scuro -->
+    <color name="brand_primary_dark">#9ECAFF</color>
+    <color name="brand_on_primary_dark">#003258</color>
+    <color name="brand_primary_container_dark">#00497D</color>
+    <color name="brand_on_primary_container_dark">#D2E4FF</color>
+
+    <color name="brand_secondary_dark">#BBC7DB</color>
+    <color name="brand_on_secondary_dark">#253140</color>
+    <color name="brand_secondary_container_dark">#3B4858</color>
+    <color name="brand_on_secondary_container_dark">#D7E3F8</color>
+
+    <color name="brand_tertiary_dark">#F5BD48</color>
+    <color name="brand_on_tertiary_dark">#422C00</color>
+    <color name="brand_tertiary_container_dark">#5E4200</color>
+    <color name="brand_on_tertiary_container_dark">#FFDEA6</color>
+
+    <color name="brand_background_dark">#1A1C1E</color>
+    <color name="brand_on_background_dark">#E2E2E6</color>
+    <color name="brand_surface_dark">#1A1C1E</color>
+    <color name="brand_on_surface_dark">#E2E2E6</color>
+    <color name="brand_surface_variant_dark">#43474E</color>
+    <color name="brand_on_surface_variant_dark">#C3C7CF</color>
+    <color name="brand_surface_container_dark">#1E2022</color>
+    <color name="brand_surface_container_high_dark">#282A2D</color>
+    <color name="brand_outline_dark">#8D9199</color>
+
+    <!-- Accenti di stato -->
+    <color name="status_free">#1B7339</color>
+    <color name="status_paid">#7C5800</color>
+
+    <!-- Oro/giallo della Cruz de la Victoria, usato per i pulsanti (uguale in chiaro/scuro
+         così i tasti "ricordano" sempre il giallo della bandiera) -->
+    <color name="asturias_gold">#EEB700</color>
+    <color name="asturias_on_gold">#2A2100</color>
+</resources>

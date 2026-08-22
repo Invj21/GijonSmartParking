@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="30dp"
+    android:height="20dp"
+    android:viewportWidth="60"
+    android:viewportHeight="40">
+    <!-- Bandiera Regno Unito (Union Jack) semplificata -->
+    <path android:fillColor="#012169" android:pathData="M0,0 h60 v40 h-60 z" />
+    <!-- Diagonali bianche -->
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="8" android:pathData="M0,0 L60,40 M60,0 L0,40" />
+    <!-- Diagonali rosse -->
+    <path android:strokeColor="#C8102E" android:strokeWidth="3" android:pathData="M0,0 L60,40 M60,0 L0,40" />
+    <!-- Croce bianca -->
+    <path android:fillColor="#FFFFFF" android:pathData="M24,0 h12 v40 h-12 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M0,14 h60 v12 h-60 z" />
+    <!-- Croce rossa -->
+    <path android:fillColor="#C8102E" android:pathData="M26,0 h8 v40 h-8 z" />
+    <path android:fillColor="#C8102E" android:pathData="M0,16 h60 v8 h-60 z" />
+</vector>

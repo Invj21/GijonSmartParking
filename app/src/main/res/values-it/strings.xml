@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">Asturias Smart Parking</string>
+
+    <!-- Navigazione inferiore -->
+    <string name="nav_home">Home</string>
+    <string name="nav_list">Parcheggi</string>
+    <string name="nav_map">Mappa</string>
+    <string name="nav_my_car">La Mia Auto</string>
+
+    <!-- Home -->
+    <string name="title_home">Asturias Smart Parking</string>
+    <string name="home_welcome">Benvenuto</string>
+    <string name="home_subtitle">Come vuoi esplorare i parcheggi delle Asturie?</string>
+    <string name="home_all_title">Tutti i parcheggi</string>
+    <string name="home_all_desc">Consulta l\'elenco completo dei parcheggi delle Asturie</string>
+    <string name="home_available_title">Disponibili ora</string>
+    <string name="home_available_desc">Solo parcheggi aperti in questo momento</string>
+    <string name="home_available_count">%1$d disponibili ora</string>
+    <string name="language_title">Lingua</string>
+    <string name="language_english">English</string>
+    <string name="language_italian">Italiano</string>
+    <string name="cd_change_language">Cambia lingua</string>
+    <string name="parking_count_label">parcheggi trovati</string>
+    <string name="available_banner">%1$d parcheggi disponibili ora</string>
+    <string name="available_banner_at">%1$d parcheggi disponibili il %2$s</string>
+    <string name="datetime_now">Ora</string>
+    <string name="cd_pick_datetime">Scegli data e ora</string>
+
+    <!-- Titoli schermate (nav graph) -->
+    <string name="title_parking_list">Parcheggi Disponibili</string>
+    <string name="title_parking_detail">Dettaglio Parcheggio</string>
+    <string name="title_find_my_car">Trova la Mia Auto</string>
+    <string name="title_parking_map">Mappa dei Parcheggi</string>
+
+    <!-- Lista parcheggi -->
+    <string name="search_hint">Cerca per nome o città…</string>
+    <string name="error_loading_data">Errore nel caricamento dei dati</string>
+    <string name="cd_find_my_car">Trova la mia auto</string>
+    <string name="cd_open_filters">Filtri</string>
+
+    <!-- Filtri -->
+    <string name="filters_title">Filtri</string>
+    <string name="filter_fee_title">Tariffa</string>
+    <string name="filter_fee_all">Tutti</string>
+    <string name="filter_fee_free">Gratuito</string>
+    <string name="filter_fee_paid">A pagamento</string>
+    <string name="filter_cover_title">Coperto</string>
+    <string name="filter_cover_all">Tutti</string>
+    <string name="filter_cover_covered">Coperto</string>
+    <string name="filter_cover_uncovered">All\'aperto</string>
+    <string name="filter_hours_title">Orario di accesso</string>
+    <string name="filter_hours_all">Qualsiasi</string>
+    <string name="filter_hours_24h">Aperto 24h</string>
+    <string name="filter_hours_open_now">Aperto ora</string>
+    <string name="filter_charging_title">Ricarica elettrica</string>
+    <string name="filter_charging_switch">Solo con punti di ricarica</string>
+    <string name="filter_accessible_title">Accessibilità</string>
+    <string name="filter_accessible_switch">Solo accessibili in sedia a rotelle</string>
+    <string name="filter_pink_switch">Solo posti rosa (gravidanza/famiglie)</string>
+    <string name="filter_vehicle_title">Veicolo</string>
+    <string name="filter_vehicle_all">Tutti</string>
+    <string name="filter_vehicle_car">Auto</string>
+    <string name="filter_vehicle_moto">Moto</string>
+    <string name="filter_nearby_title">Vicino a me</string>
+    <string name="filter_nearby_switch">Solo entro il raggio</string>
+    <string name="filter_radius_value">Raggio: %1$d km</string>
+    <string name="filter_apply">Applica</string>
+    <string name="filter_reset">Ripristina</string>
+    <string name="location_permission_denied">Il permesso di posizione è necessario per il filtro \"vicino a me\"</string>
+    <string name="location_unavailable">Posizione attuale non disponibile</string>
+
+    <!-- Dettaglio extra -->
+    <string name="label_covered">Coperto: %1$s</string>
+    <string name="label_hours">Orario di accesso: %1$s</string>
+    <string name="label_charge">Tariffa: %1$s</string>
+    <string name="label_charging">Ricarica elettrica: %1$s</string>
+    <string name="label_vehicle">Veicolo: %1$s</string>
+    <string name="label_pink">Posto rosa: %1$s</string>
+    <string name="vehicle_car">Auto</string>
+    <string name="vehicle_motorcycle">Moto / scooter</string>
+    <string name="moto_parking_generic">Parcheggio moto</string>
+    <string name="value_yes">Sì</string>
+    <string name="value_no">No</string>
+    <string name="chip_ev">EV ⚡</string>
+    <string name="chip_accessible">♿</string>
+    <string name="chip_moto">🏍 Moto</string>
+    <string name="chip_pink">🌸 Rosa</string>
+
+    <!-- Tipi di parcheggio -->
+    <string name="type_surface">In superficie</string>
+    <string name="type_underground">Sotterraneo</string>
+    <string name="type_multistorey">Multipiano</string>
+    <string name="type_rooftop">Sul tetto</string>
+    <string name="type_street_side">Su strada</string>
+    <string name="type_lane">In corsia</string>
+    <string name="type_garage_boxes">Box auto</string>
+    <string name="type_carports">Tettoie auto</string>
+
+    <!-- Accessibilità (sedia a rotelle) -->
+    <string name="wheelchair_limited">Limitata</string>
+    <string name="wheelchair_designated">Riservata</string>
+
+    <!-- Preferiti -->
+    <string name="nav_favorites">Preferiti</string>
+    <string name="title_favorites">Preferiti</string>
+    <string name="home_favorites_title">Preferiti</string>
+    <string name="home_favorites_desc">I tuoi parcheggi salvati</string>
+    <string name="home_favorites_count">%1$d salvati</string>
+    <string name="favorites_empty">Non hai ancora parcheggi preferiti. Tocca il cuore di un parcheggio per salvarlo qui.</string>
+    <string name="cd_favorite">Aggiungi o rimuovi dai preferiti</string>
+
+    <!-- Elemento parcheggio / dettaglio -->
+    <string name="label_city">Città: %1$s</string>
+    <string name="label_type">Tipo: %1$s</string>
+    <string name="label_fee">Tariffa: %1$s</string>
+    <string name="fee_paid">A pagamento</string>
+    <string name="fee_free">Gratuito</string>
+    <string name="label_capacity">Posti totali: %1$s</string>
+    <string name="not_available">N/D</string>
+    <string name="label_accessibility">Accessibilità: %1$s</string>
+    <string name="label_coordinates">Coordinate: %1$.5f, %2$.5f</string>
+    <string name="btn_show_on_map">Vedi sulla mappa</string>
+
+    <!-- Trova la mia auto -->
+    <string name="car_parked_status">Auto parcheggiata!</string>
+    <string name="no_car_saved">Nessuna auto salvata</string>
+    <string name="save_location_hint">Salva la tua posizione per non dimenticare dove hai parcheggiato.</string>
+    <string name="label_note">Nota: %1$s</string>
+    <string name="label_date">Data: %1$s</string>
+    <string name="label_position">Posizione: %1$s, %2$s</string>
+    <string name="btn_get_directions">Portami alla mia auto</string>
+    <string name="btn_take_photo">Scatta foto del parcheggio</string>
+    <string name="hint_note">Aggiungi una nota (es. Piano 2)</string>
+    <string name="btn_save_location">Salva posizione attuale</string>
+    <string name="btn_remove_car">Rimuovi auto</string>
+    <string name="toast_location_saved">Posizione e foto salvate!</string>
+
+    <!-- Autenticazione: accesso / registrazione -->
+    <string name="title_login">Accedi</string>
+    <string name="title_register">Crea account</string>
+    <string name="auth_login_subtitle">Accedi per sincronizzare i tuoi preferiti e la posizione dell\'auto</string>
+    <string name="auth_register_subtitle">Crea un account per sincronizzare i tuoi preferiti e la posizione dell\'auto</string>
+    <string name="auth_email_hint">Email</string>
+    <string name="auth_password_hint">Password</string>
+    <string name="auth_login_button">Accedi</string>
+    <string name="auth_register_button">Crea account</string>
+    <string name="auth_go_register">Non hai un account? Registrati</string>
+    <string name="auth_go_login">Hai già un account? Accedi</string>
+    <string name="auth_error_empty_fields">Per favore, compila tutti i campi</string>
+    <string name="auth_error_password_length">La password deve avere almeno 6 caratteri</string>
+    <string name="auth_register_success">Account creato!</string>
+    <string name="cd_logout">Esci</string>
+
+    <!-- Bussola (Task 4) -->
+    <string name="compass_hint">Punta verso la tua auto</string>
+    <string name="cd_compass_arrow">Direzione verso la tua auto</string>
+
+    <!-- Notifiche / promemoria (Task 6) -->
+    <string name="notification_channel_name">Promemoria auto</string>
+    <string name="notification_channel_description">Avvisi su dove hai parcheggiato</string>
+    <string name="reminder_title">Non dimenticare la tua auto!</string>
+    <string name="reminder_body">Hai parcheggiato qui alle %1$s</string>
+
+    <!-- Accesso con Google -->
+    <string name="auth_or_divider">o</string>
+    <string name="auth_google_button">Continua con Google</string>
+    <string name="auth_error_google_generic">Accesso con Google non riuscito, riprova</string>
+</resources>

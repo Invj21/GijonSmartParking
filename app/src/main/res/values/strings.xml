@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">Asturias Smart Parking</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_list">Parking</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_my_car">My Car</string>
+
+    <!-- Home -->
+    <string name="title_home">Asturias Smart Parking</string>
+    <string name="home_welcome">Welcome</string>
+    <string name="home_subtitle">How do you want to explore parking in Asturias?</string>
+    <string name="home_all_title">All parking</string>
+    <string name="home_all_desc">Browse the full list of parking in Asturias</string>
+    <string name="home_available_title">Available now</string>
+    <string name="home_available_desc">Only parking currently open</string>
+    <string name="home_available_count">%1$d available now</string>
+    <string name="language_title">Language</string>
+    <string name="language_english">English</string>
+    <string name="language_italian">Italiano</string>
+    <string name="cd_change_language">Change language</string>
+    <string name="parking_count_label">parking found</string>
+    <string name="available_banner">%1$d parking available now</string>
+    <string name="available_banner_at">%1$d parking available on %2$s</string>
+    <string name="datetime_now">Now</string>
+    <string name="cd_pick_datetime">Choose date and time</string>
+
+    <!-- Screen titles (nav graph) -->
+    <string name="title_parking_list">Available Parking</string>
+    <string name="title_parking_detail">Parking Detail</string>
+    <string name="title_find_my_car">Find My Car</string>
+    <string name="title_parking_map">Parking Map</string>
+
+    <!-- Parking list -->
+    <string name="search_hint">Search by name or city…</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="cd_find_my_car">Find my car</string>
+    <string name="cd_open_filters">Filters</string>
+
+    <!-- Filters -->
+    <string name="filters_title">Filters</string>
+    <string name="filter_fee_title">Fee</string>
+    <string name="filter_fee_all">All</string>
+    <string name="filter_fee_free">Free</string>
+    <string name="filter_fee_paid">Paid</string>
+    <string name="filter_cover_title">Covered</string>
+    <string name="filter_cover_all">All</string>
+    <string name="filter_cover_covered">Covered</string>
+    <string name="filter_cover_uncovered">Open-air</string>
+    <string name="filter_hours_title">Access hours</string>
+    <string name="filter_hours_all">Any</string>
+    <string name="filter_hours_24h">Open 24h</string>
+    <string name="filter_hours_open_now">Open now</string>
+    <string name="filter_charging_title">EV charging</string>
+    <string name="filter_charging_switch">Only with charging points</string>
+    <string name="filter_accessible_title">Accessibility</string>
+    <string name="filter_accessible_switch">Only wheelchair accessible</string>
+    <string name="filter_pink_switch">Only pink parking (pregnant/parents)</string>
+    <string name="filter_vehicle_title">Vehicle</string>
+    <string name="filter_vehicle_all">All</string>
+    <string name="filter_vehicle_car">Car</string>
+    <string name="filter_vehicle_moto">Motorbike</string>
+    <string name="filter_nearby_title">Near me</string>
+    <string name="filter_nearby_switch">Only within radius</string>
+    <string name="filter_radius_value">Radius: %1$d km</string>
+    <string name="filter_apply">Apply</string>
+    <string name="filter_reset">Reset</string>
+    <string name="location_permission_denied">Location permission needed for the \"near me\" filter</string>
+    <string name="location_unavailable">Current location unavailable</string>
+
+    <!-- Detail extra -->
+    <string name="label_covered">Covered: %1$s</string>
+    <string name="label_hours">Access hours: %1$s</string>
+    <string name="label_charge">Tariff: %1$s</string>
+    <string name="label_charging">EV charging: %1$s</string>
+    <string name="label_vehicle">Vehicle: %1$s</string>
+    <string name="label_pink">Pink parking: %1$s</string>
+    <string name="vehicle_car">Car</string>
+    <string name="vehicle_motorcycle">Motorbike / scooter</string>
+    <string name="moto_parking_generic">Motorbike parking</string>
+    <string name="value_yes">Yes</string>
+    <string name="value_no">No</string>
+    <string name="chip_ev">EV ⚡</string>
+    <string name="chip_accessible">♿</string>
+    <string name="chip_moto">🏍 Motorbike</string>
+    <string name="chip_pink">🌸 Pink</string>
+
+    <!-- Parking type labels -->
+    <string name="type_surface">Surface</string>
+    <string name="type_underground">Underground</string>
+    <string name="type_multistorey">Multi-storey</string>
+    <string name="type_rooftop">Rooftop</string>
+    <string name="type_street_side">Street side</string>
+    <string name="type_lane">Lane</string>
+    <string name="type_garage_boxes">Garage boxes</string>
+    <string name="type_carports">Carports</string>
+
+    <!-- Accessibility (wheelchair) labels -->
+    <string name="wheelchair_limited">Limited</string>
+    <string name="wheelchair_designated">Designated</string>
+
+    <!-- Favorites -->
+    <string name="nav_favorites">Favorites</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="home_favorites_title">Favorites</string>
+    <string name="home_favorites_desc">Your saved parking</string>
+    <string name="home_favorites_count">%1$d saved</string>
+    <string name="favorites_empty">You have no favorite parking yet. Tap the heart on a parking to save it here.</string>
+    <string name="cd_favorite">Add or remove from favorites</string>
+
+    <!-- Parking item / detail -->
+    <string name="label_city">City: %1$s</string>
+    <string name="label_type">Type: %1$s</string>
+    <string name="label_fee">Fee: %1$s</string>
+    <string name="fee_paid">Paid</string>
+    <string name="fee_free">Free</string>
+    <string name="label_capacity">Total spaces: %1$s</string>
+    <string name="not_available">N/A</string>
+    <string name="label_accessibility">Accessibility: %1$s</string>
+    <string name="label_coordinates">Coordinates: %1$.5f, %2$.5f</string>
+    <string name="btn_show_on_map">View on map</string>
+
+    <!-- Find my car -->
+    <string name="car_parked_status">Car parked!</string>
+    <string name="no_car_saved">No car saved</string>
+    <string name="save_location_hint">Save your location so you don\'t forget where you parked.</string>
+    <string name="label_note">Note: %1$s</string>
+    <string name="label_date">Date: %1$s</string>
+    <string name="label_position">Position: %1$s, %2$s</string>
+    <string name="btn_get_directions">Take me to my car</string>
+    <string name="btn_take_photo">Take parking photo</string>
+    <string name="hint_note">Add a note (e.g. Floor 2)</string>
+    <string name="btn_save_location">Save current location</string>
+    <string name="btn_remove_car">Remove car</string>
+    <string name="toast_location_saved">Location and photo saved!</string>
+
+    <!-- Auth: login / register -->
+    <string name="title_login">Log In</string>
+    <string name="title_register">Create Account</string>
+    <string name="auth_login_subtitle">Sign in to sync your favorites and car location</string>
+    <string name="auth_register_subtitle">Create an account to sync your favorites and car location</string>
+    <string name="auth_email_hint">Email</string>
+    <string name="auth_password_hint">Password</string>
+    <string name="auth_login_button">Log In</string>
+    <string name="auth_register_button">Create Account</string>
+    <string name="auth_go_register">Don\'t have an account? Sign up</string>
+    <string name="auth_go_login">Already have an account? Log in</string>
+    <string name="auth_error_empty_fields">Please fill in all fields</string>
+    <string name="auth_error_password_length">Password must be at least 6 characters</string>
+    <string name="auth_register_success">Account created!</string>
+    <string name="cd_logout">Log out</string>
+
+    <!-- Compass (Task 4) -->
+    <string name="compass_hint">Pointing towards your car</string>
+    <string name="cd_compass_arrow">Direction to your car</string>
+
+    <!-- Notifications / reminder (Task 6) -->
+    <string name="notification_channel_name">Car reminders</string>
+    <string name="notification_channel_description">Reminders about where you parked</string>
+    <string name="reminder_title">Don\'t forget your car!</string>
+    <string name="reminder_body">You parked here at %1$s</string>
+
+    <!-- Google Sign-In -->
+    <string name="auth_or_divider">or</string>
+    <string name="auth_google_button">Continue with Google</string>
+    <string name="auth_error_google_generic">Google sign-in failed, please try again</string>
+</resources>

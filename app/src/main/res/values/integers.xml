@@ -1,0 +1,4 @@
+<resources>
+    <!-- Numero di colonne della lista parcheggi (telefono = 1) -->
+    <integer name="parking_columns">1</integer>
+</resources>

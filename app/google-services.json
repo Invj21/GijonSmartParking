@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "482185945853",
+    "project_id": "gijonsmartparking-7a9ea",
+    "storage_bucket": "gijonsmartparking-7a9ea.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482185945853:android:194429c0b5f665437a9494",
+        "android_client_info": {
+          "package_name": "es.uniovi.federico.gijonsmartparking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "482185945853-rjb233h252jb0ev27ph6cjckfcnqocgk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.uniovi.federico.gijonsmartparking",
+            "certificate_hash": "9078911621d2730f26420493a02c2f2e421dc104"
+          }
+        },
+        {
+          "client_id": "482185945853-rk1b91aga8ji4ns2iukf309ahikiciv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAIqJ9sLsoerfRFSRQdjUKPetAbxkAbdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "482185945853-rk1b91aga8ji4ns2iukf309ahikiciv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

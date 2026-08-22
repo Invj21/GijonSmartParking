@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- Login / registrazione (Task 2). Non è dichiarata come startDestination qui:
+         MainActivity sceglie a runtime tra homeFragment e loginFragment in base al
+         token salvato (TokenManager), per evitare il "flash" della Home. -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.RegisterFragment"
+        android:label="@string/title_register"
+        tools:layout="@layout/fragment_register" />
+
+    <!-- Schermata Home -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_parkingListFragment"
+            app:destination="@id/parkingListFragment" />
+    </fragment>
+
+    <!-- Schermata Lista -->
+    <fragment
+        android:id="@+id/parkingListFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.ParkingListFragment"
+        android:label="@string/title_parking_list"
+        tools:layout="@layout/fragment_parking_list" >
+
+        <argument
+            android:name="availableOnly"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+        <argument
+            android:name="favoritesOnly"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+        <!-- Azione per andare al dettaglio -->
+        <action
+            android:id="@+id/action_parkingListFragment_to_parkingDetailFragment"
+            app:destination="@id/parkingDetailFragment" />
+
+        <!-- AGGIUNGI QUESTA AZIONE: per andare a Find My Car -->
+        <action
+            android:id="@+id/action_parkingListFragment_to_findMyCarFragment"
+            app:destination="@id/findMyCarFragment" />
+    </fragment>
+
+    <!-- Schermata Dettaglio -->
+    <fragment
+        android:id="@+id/parkingDetailFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.ParkingDetailFragment"
+        android:label="@string/title_parking_detail"
+        tools:layout="@layout/fragment_parking_detail">
+        <argument
+            android:name="parking"
+            app:argType="es.uniovi.federico.gijonsmartparking.data.ParkingEntity" />
+    </fragment>
+
+    <!-- AGGIUNGI QUESTO BLOCCO: Schermata Find My Car -->
+    <fragment
+        android:id="@+id/findMyCarFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.FindMyCarFragment"
+        android:label="@string/title_find_my_car"
+        tools:layout="@layout/fragment_find_my_car" />
+    <fragment
+        android:id="@+id/parkingMapFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.ParkingMapFragment"
+        android:label="@string/title_parking_map"
+        tools:layout="@layout/fragment_parking_map">
+
+        <action
+            android:id="@+id/action_parkingMapFragment_to_parkingDetailFragment"
+            app:destination="@id/parkingDetailFragment" />
+    </fragment>
+
+</navigation>

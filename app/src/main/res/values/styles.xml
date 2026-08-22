@@ -1,0 +1,24 @@
+<resources>
+    <!--
+      Stili dei pulsanti in oro/giallo delle Asturie. Li ho fatti a parte così li riuso
+      in tutti i layout invece di ripetere ogni volta i colori sui singoli bottoni.
+    -->
+
+    <!-- Pulsante pieno giallo con testo/icona scuri (azione principale) -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/asturias_gold</item>
+        <item name="android:textColor">@color/asturias_on_gold</item>
+        <item name="iconTint">@color/asturias_on_gold</item>
+    </style>
+
+    <!-- Pulsante "testo" con scritta color oro (azione secondaria, es. Reset) -->
+    <style name="Widget.App.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/asturias_on_gold</item>
+    </style>
+
+    <!-- Pulsante a sola icona, cerchio giallo (filtri, lingua, cuore...) -->
+    <style name="Widget.App.IconButton" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="backgroundTint">@color/asturias_gold</item>
+        <item name="iconTint">@color/asturias_on_gold</item>
+    </style>
+</resources>

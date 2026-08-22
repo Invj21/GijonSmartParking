@@ -1,0 +1,4 @@
+<resources>
+    <!-- Su tablet (larghezza minima 600dp) mostriamo la lista a 2 colonne -->
+    <integer name="parking_columns">2</integer>
+</resources>

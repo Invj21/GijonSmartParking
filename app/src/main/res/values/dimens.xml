@@ -1,0 +1,4 @@
+<resources>
+    <!-- Margine orizzontale del contenuto nelle schermate scrollabili (telefono) -->
+    <dimen name="content_padding_horizontal">20dp</dimen>
+</resources>

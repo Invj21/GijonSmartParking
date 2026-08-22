@@ -1,0 +1,4 @@
+<resources>
+    <!-- Su tablet diamo più respiro laterale così il contenuto non si allarga troppo -->
+    <dimen name="content_padding_horizontal">72dp</dimen>
+</resources>
