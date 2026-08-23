@@ -96,7 +96,7 @@ class RegisterFragment : Fragment() {
                 val googleCredential = GoogleSignInHelper.signIn(
                     requireActivity(), getString(R.string.default_web_client_id)
                 )
-                viewModel.loginWithGoogle(googleCredential.idToken, googleCredential.id)
+                viewModel.loginWithGoogle(googleCredential.idToken)
             } catch (e: GetCredentialCancellationException) {
                 // l'utente ha chiuso il selettore account: nessun errore da mostrare
             } catch (e: GetCredentialException) {

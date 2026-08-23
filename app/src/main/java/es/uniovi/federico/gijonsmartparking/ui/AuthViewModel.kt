@@ -41,10 +41,10 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     }
 
     /** Login/registrazione con Google: find-or-create sul backend, va sempre in LoginSuccess. */
-    fun loginWithGoogle(idToken: String, email: String) {
+    fun loginWithGoogle(idToken: String) {
         _authState.value = AuthUiState.Loading
         viewModelScope.launch {
-            val result = repository.loginWithGoogle(idToken, email)
+            val result = repository.loginWithGoogle(idToken)
             _authState.value = result.fold(
                 onSuccess = { AuthUiState.LoginSuccess },
                 onFailure = { AuthUiState.Error(it.message ?: "Errore") }

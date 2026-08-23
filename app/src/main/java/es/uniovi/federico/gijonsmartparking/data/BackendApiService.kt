@@ -26,7 +26,7 @@ interface BackendApiService {
     suspend fun loginUser(@Body request: LoginRequest): LoginResponse
 
     @POST("auth/google")
-    suspend fun loginWithGoogle(@Body request: GoogleAuthRequest): LoginResponse
+    suspend fun loginWithGoogle(@Body request: GoogleAuthRequest): GoogleAuthResponse
 
     // --- Preferiti (Task 3) ---
 
@@ -68,6 +68,8 @@ data class LoginRequest(val email: String, val password: String)
 data class LoginResponse(val token: String)
 
 data class GoogleAuthRequest(@Json(name = "id_token") val idToken: String)
+
+data class GoogleAuthResponse(val token: String, val email: String)
 
 data class FavoriteDto(
     @Json(name = "parking_id") val parkingId: Long,

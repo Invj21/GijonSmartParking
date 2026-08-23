@@ -76,8 +76,9 @@ TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 Registrazione rapida: l'app Android ottiene un ID token da Google (Credential
 Manager) e lo manda qui; se l'email non esiste ancora viene creato un nuovo
 utente (senza password, quella non serve più), altrimenti si fa login
-sull'utente esistente. In entrambi i casi la risposta è lo stesso JWT che
-restituisce `/auth/login`.
+sull'utente esistente. In entrambi i casi la risposta include lo stesso JWT
+che restituisce `/auth/login`, più l'email (che il client non ha altrimenti
+modo di conoscere da un ID token grezzo).
 
 ```bash
 curl -X POST http://localhost:5000/auth/google \
@@ -87,7 +88,7 @@ curl -X POST http://localhost:5000/auth/google \
 
 Risposta `200`:
 ```json
-{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}
+{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", "email": "utente@esempio.com"}
 ```
 
 Richiede la variabile d'ambiente `GOOGLE_WEB_CLIENT_ID` (vedi tabella di

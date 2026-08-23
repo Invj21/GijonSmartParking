@@ -143,7 +143,7 @@ def google_auth():
         db.session.add(user)
         db.session.commit()
 
-    return jsonify({"token": generate_token(user.id)}), 200
+    return jsonify({"token": generate_token(user.id), "email": user.email}), 200
 
 
 # ---------------------------------------------------------------------------

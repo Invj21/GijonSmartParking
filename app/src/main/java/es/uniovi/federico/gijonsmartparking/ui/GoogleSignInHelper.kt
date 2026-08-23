@@ -19,7 +19,8 @@ object GoogleSignInHelper {
      * Prima provo a mostrare solo gli account Google già usati con questa app (più veloce,
      * comportamento da "accedi"); se non ce n'è nessuno (NoCredentialException), riprovo
      * mostrando il selettore con TUTTI gli account Google del dispositivo (comportamento
-     * da "registrati" al primo utilizzo).
+     * da "registrati" al primo utilizzo) — che include comunque "Aggiungi un altro account"
+     * per accedere con un account Google non ancora presente sul dispositivo.
      */
     suspend fun signIn(context: Context, webClientId: String): GoogleIdTokenCredential {
         val credentialManager = CredentialManager.create(context)

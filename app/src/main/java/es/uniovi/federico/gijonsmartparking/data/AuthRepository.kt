@@ -37,14 +37,16 @@ class AuthRepository(
     }
 
     /**
-     * Login/registrazione rapida con Google: idToken arriva già verificato da Credential
-     * Manager lato Android, qui lo mando al backend che lo riverifica con Google e crea
-     * l'utente al primo accesso (find-or-create). Stessa sessione di un login normale.
+     * Login/registrazione rapida con Google: idToken arriva dal login via browser
+     * (GoogleSignInHelper/AppAuth), qui lo mando al backend che lo riverifica con Google
+     * e crea l'utente al primo accesso (find-or-create). Il backend restituisce anche
+     * l'email: da un ID token grezzo il client non avrebbe altrimenti modo di saperla
+     * senza decodificarlo da solo.
      */
-    suspend fun loginWithGoogle(idToken: String, email: String): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun loginWithGoogle(idToken: String): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             val response = backendApiService.loginWithGoogle(GoogleAuthRequest(idToken))
-            tokenManager.saveSession(response.token, email)
+            tokenManager.saveSession(response.token, response.email)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(Exception(extractErrorMessage(e)))
