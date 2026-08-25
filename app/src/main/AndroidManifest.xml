@@ -46,10 +46,10 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!-- 3. GOOGLE MAPS API KEY (Se decidi di farla dopo, lascia il placeholder) -->
+        <!-- 3. GOOGLE MAPS / PLACES API KEY -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD99vUjlVlasM-l6DvnX0ymJWuxe_U1Ed8" />
+            android:value="@string/google_maps_key" />
 
         <!-- 4. Persistenza automatica della lingua scelta (per-app language su API < 33) -->
         <service

@@ -18,12 +18,27 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=utcnow, nullable=False)
 
+    # Profilo (sezione Account): tutti opzionali, l'utente li imposta dopo la registrazione
+    first_name = db.Column(db.String(120), nullable=True)
+    last_name = db.Column(db.String(120), nullable=True)
+    home_address = db.Column(db.String(512), nullable=True)
+    photo_url = db.Column(db.String(512), nullable=True)
+
     favorites = db.relationship(
         "Favorite", backref="user", cascade="all, delete-orphan", lazy=True
     )
     car_locations = db.relationship(
         "CarLocation", backref="user", cascade="all, delete-orphan", lazy=True
     )
+
+    def to_dict(self):
+        return {
+            "email": self.email,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "home_address": self.home_address,
+            "photo_url": self.photo_url,
+        }
 
 
 class Favorite(db.Model):

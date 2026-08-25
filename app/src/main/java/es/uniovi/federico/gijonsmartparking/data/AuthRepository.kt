@@ -2,8 +2,13 @@ package es.uniovi.federico.gijonsmartparking.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.HttpException
+import java.io.File
 
 /**
  * Repository dell'autenticazione: stesso ruolo di ParkingRepository ma per login/registrazione.
@@ -48,6 +53,53 @@ class AuthRepository(
             val response = backendApiService.loginWithGoogle(GoogleAuthRequest(idToken))
             tokenManager.saveSession(response.token, response.email)
             Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception(extractErrorMessage(e)))
+        }
+    }
+
+    /** Elimina l'account sul backend (cancella anche preferiti/posizione auto in cascata) e pulisce la sessione locale. */
+    suspend fun deleteAccount(): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            val response = backendApiService.deleteAccount()
+            if (!response.isSuccessful) throw HttpException(response)
+            tokenManager.clearSession()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception(extractErrorMessage(e)))
+        }
+    }
+
+    suspend fun getAccount(): Result<AccountDto> = withContext(Dispatchers.IO) {
+        try {
+            Result.success(backendApiService.getAccount())
+        } catch (e: Exception) {
+            Result.failure(Exception(extractErrorMessage(e)))
+        }
+    }
+
+    /** Aggiorna nome/cognome/indirizzo di casa, con foto profilo opzionale. */
+    suspend fun updateAccount(
+        firstName: String,
+        lastName: String,
+        homeAddress: String,
+        photoFile: File?
+    ): Result<AccountDto> = withContext(Dispatchers.IO) {
+        try {
+            val response = if (photoFile != null) {
+                val textType = "text/plain".toMediaTypeOrNull()
+                backendApiService.updateAccountWithPhoto(
+                    firstName.toRequestBody(textType),
+                    lastName.toRequestBody(textType),
+                    homeAddress.toRequestBody(textType),
+                    MultipartBody.Part.createFormData(
+                        "photo", photoFile.name, photoFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    )
+                )
+            } else {
+                backendApiService.updateAccount(UpdateAccountRequest(firstName, lastName, homeAddress))
+            }
+            Result.success(response)
         } catch (e: Exception) {
             Result.failure(Exception(extractErrorMessage(e)))
         }

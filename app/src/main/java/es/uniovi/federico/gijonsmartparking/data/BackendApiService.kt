@@ -8,6 +8,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 
@@ -27,6 +28,29 @@ interface BackendApiService {
 
     @POST("auth/google")
     suspend fun loginWithGoogle(@Body request: GoogleAuthRequest): GoogleAuthResponse
+
+    // Response<Unit> invece di Unit: un 204 No Content ha body null, e Retrofit lancia
+    // KotlinNullPointerException se il tipo dichiarato è "non-null" (vedi retrofit#3075).
+    // Con Response<Unit> evito la conversione automatica e controllo isSuccessful a mano.
+    @DELETE("account")
+    suspend fun deleteAccount(): retrofit2.Response<Unit>
+
+    // --- Profilo (sezione Account: nome, cognome, indirizzo di casa, foto) ---
+
+    @GET("account")
+    suspend fun getAccount(): AccountDto
+
+    @PUT("account")
+    suspend fun updateAccount(@Body request: UpdateAccountRequest): AccountDto
+
+    @Multipart
+    @PUT("account")
+    suspend fun updateAccountWithPhoto(
+        @Part("first_name") firstName: RequestBody,
+        @Part("last_name") lastName: RequestBody,
+        @Part("home_address") homeAddress: RequestBody,
+        @Part photo: MultipartBody.Part
+    ): AccountDto
 
     // --- Preferiti (Task 3) ---
 
@@ -85,4 +109,18 @@ data class CarLocationDto(
     val lng: Double,
     @Json(name = "photo_url") val photoUrl: String?,
     @Json(name = "saved_at") val savedAt: String
+)
+
+data class AccountDto(
+    val email: String,
+    @Json(name = "first_name") val firstName: String?,
+    @Json(name = "last_name") val lastName: String?,
+    @Json(name = "home_address") val homeAddress: String?,
+    @Json(name = "photo_url") val photoUrl: String?
+)
+
+data class UpdateAccountRequest(
+    @Json(name = "first_name") val firstName: String?,
+    @Json(name = "last_name") val lastName: String?,
+    @Json(name = "home_address") val homeAddress: String?
 )

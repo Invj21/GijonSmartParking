@@ -146,6 +146,57 @@ def google_auth():
     return jsonify({"token": generate_token(user.id), "email": user.email}), 200
 
 
+@app.route("/account", methods=["GET"])
+@token_required
+def get_account():
+    return jsonify(g.current_user.to_dict()), 200
+
+
+@app.route("/account", methods=["PUT"])
+@token_required
+def update_account():
+    """Aggiorna nome, cognome, indirizzo di casa e (opzionale) foto profilo.
+    Stesso schema di save_car_location: JSON puro oppure multipart/form-data se
+    c'è una foto da caricare."""
+    user = g.current_user
+
+    if request.content_type and request.content_type.startswith("multipart/form-data"):
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        home_address = request.form.get("home_address")
+        photo = request.files.get("photo")
+
+        if photo and photo.filename and allowed_photo(photo.filename):
+            filename = secure_filename(
+                f"user{user.id}_profile_{int(datetime.now().timestamp())}_{photo.filename}"
+            )
+            photo.save(os.path.join(UPLOAD_DIR, filename))
+            user.photo_url = f"/uploads/{filename}"
+    else:
+        data = request.get_json(silent=True) or {}
+        first_name = data.get("first_name")
+        last_name = data.get("last_name")
+        home_address = data.get("home_address")
+
+    user.first_name = first_name
+    user.last_name = last_name
+    user.home_address = home_address
+    db.session.commit()
+
+    return jsonify(user.to_dict()), 200
+
+
+@app.route("/account", methods=["DELETE"])
+@token_required
+def delete_account():
+    """Elimina definitivamente l'account e tutti i suoi dati. Le righe di Favorite e
+    CarLocation sono in cascade sulla relazione (vedi models.py), quindi cancellare
+    l'utente basta a cancellare anche loro."""
+    db.session.delete(g.current_user)
+    db.session.commit()
+    return "", 204
+
+
 # ---------------------------------------------------------------------------
 # Favorites
 # ---------------------------------------------------------------------------

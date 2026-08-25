@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">Asturias Smart Parking</string>
 
+    <!-- Stessa API key usata dal meta-data di Google Maps nel Manifest e da Places.initialize() -->
+    <string name="google_maps_key" translatable="false">AIzaSyD99vUjlVlasM-l6DvnX0ymJWuxe_U1Ed8</string>
+
     <!-- Bottom navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_list">Parking</string>
     <string name="nav_map">Map</string>
     <string name="nav_my_car">My Car</string>
+    <string name="nav_account">Account</string>
 
     <!-- Home -->
     <string name="title_home">Asturias Smart Parking</string>
@@ -165,4 +169,26 @@
     <string name="auth_or_divider">or</string>
     <string name="auth_google_button">Continue with Google</string>
     <string name="auth_error_google_generic">Google sign-in failed, please try again</string>
+
+    <!-- Account section -->
+    <string name="title_account">Account</string>
+    <string name="account_email_label">Signed in as</string>
+    <string name="account_language_section">Language</string>
+    <string name="account_delete_button">Delete account</string>
+    <string name="account_delete_dialog_title">Delete account?</string>
+    <string name="account_delete_dialog_message">This will permanently delete your account, favorites and saved car location. This action cannot be undone.</string>
+    <string name="account_delete_confirm">Delete</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- Account section: profile photo, personal data -->
+    <string name="cd_profile_photo">Profile photo</string>
+    <string name="account_change_photo">Change profile photo</string>
+    <string name="account_photo_source_camera">Take photo</string>
+    <string name="account_photo_source_gallery">Choose from gallery</string>
+    <string name="hint_first_name">First name</string>
+    <string name="hint_last_name">Last name</string>
+    <string name="hint_home_address">Home address</string>
+    <string name="btn_save_profile">Save</string>
+    <string name="btn_go_home">Take me home</string>
+    <string name="toast_profile_saved">Profile saved!</string>
 </resources>

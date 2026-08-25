@@ -12,4 +12,8 @@
         android:id="@+id/findMyCarFragment"
         android:icon="@drawable/ic_nav_car"
         android:title="@string/nav_my_car" />
+    <item
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/ic_nav_account"
+        android:title="@string/nav_account" />
 </menu>

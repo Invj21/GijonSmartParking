@@ -93,4 +93,11 @@
             app:destination="@id/parkingDetailFragment" />
     </fragment>
 
+    <!-- Schermata Account: email, lingua, logout, elimina account -->
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="es.uniovi.federico.gijonsmartparking.ui.AccountFragment"
+        android:label="@string/title_account"
+        tools:layout="@layout/fragment_account" />
+
 </navigation>

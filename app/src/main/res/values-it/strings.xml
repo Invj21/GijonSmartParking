@@ -6,6 +6,7 @@
     <string name="nav_list">Parcheggi</string>
     <string name="nav_map">Mappa</string>
     <string name="nav_my_car">La Mia Auto</string>
+    <string name="nav_account">Account</string>
 
     <!-- Home -->
     <string name="title_home">Asturias Smart Parking</string>
@@ -44,7 +45,7 @@
     <string name="filter_fee_all">Tutti</string>
     <string name="filter_fee_free">Gratuito</string>
     <string name="filter_fee_paid">A pagamento</string>
-    <string name="filter_cover_title">Coperto</string>
+    <string name="filter_cover_title">Copertura</string>
     <string name="filter_cover_all">Tutti</string>
     <string name="filter_cover_covered">Coperto</string>
     <string name="filter_cover_uncovered">All\'aperto</string>
@@ -165,4 +166,26 @@
     <string name="auth_or_divider">o</string>
     <string name="auth_google_button">Continua con Google</string>
     <string name="auth_error_google_generic">Accesso con Google non riuscito, riprova</string>
+
+    <!-- Sezione Account -->
+    <string name="title_account">Account</string>
+    <string name="account_email_label">Accesso effettuato come</string>
+    <string name="account_language_section">Lingua</string>
+    <string name="account_delete_button">Elimina account</string>
+    <string name="account_delete_dialog_title">Eliminare l\'account?</string>
+    <string name="account_delete_dialog_message">Questa azione eliminerà definitivamente il tuo account, i preferiti e la posizione dell\'auto salvata. Non può essere annullata.</string>
+    <string name="account_delete_confirm">Elimina</string>
+    <string name="action_cancel">Annulla</string>
+
+    <!-- Sezione Account: foto profilo, dati personali -->
+    <string name="cd_profile_photo">Foto profilo</string>
+    <string name="account_change_photo">Cambia foto profilo</string>
+    <string name="account_photo_source_camera">Scatta foto</string>
+    <string name="account_photo_source_gallery">Scegli dalla galleria</string>
+    <string name="hint_first_name">Nome</string>
+    <string name="hint_last_name">Cognome</string>
+    <string name="hint_home_address">Indirizzo di casa</string>
+    <string name="btn_save_profile">Salva</string>
+    <string name="btn_go_home">Portami a casa</string>
+    <string name="toast_profile_saved">Profilo salvato!</string>
 </resources>

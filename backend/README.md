@@ -151,6 +151,38 @@ curl -X DELETE http://localhost:5000/car-location \
   -H "Authorization: Bearer $TOKEN"
 ```
 
+### Account
+
+**Leggi profilo**
+```bash
+curl http://localhost:5000/account \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Aggiorna profilo (JSON, senza foto)**
+```bash
+curl -X PUT http://localhost:5000/account \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"first_name": "Mario", "last_name": "Rossi", "home_address": "Via Roma 1, Gijón"}'
+```
+
+**Aggiorna profilo con foto (multipart/form-data)**
+```bash
+curl -X PUT http://localhost:5000/account \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "first_name=Mario" \
+  -F "last_name=Rossi" \
+  -F "home_address=Via Roma 1, Gijón" \
+  -F "photo=@/percorso/locale/foto.jpg"
+```
+
+**Elimina account** (cancella anche preferiti e posizione auto, in cascata)
+```bash
+curl -X DELETE http://localhost:5000/account \
+  -H "Authorization: Bearer $TOKEN"
+```
+
 ### Health check
 
 ```bash

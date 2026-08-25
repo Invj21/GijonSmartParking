@@ -169,6 +169,13 @@ class ParkingViewModel(private val repository: ParkingRepository) : ViewModel() 
             repository.clearCarLocation()
         }
     }
+
+    /** Pulisce preferiti/posizione auto in locale, dopo l'eliminazione dell'account. */
+    fun clearLocalUserData() {
+        viewModelScope.launch {
+            repository.clearLocalUserData()
+        }
+    }
 }
 
 /**

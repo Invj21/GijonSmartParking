@@ -23,59 +23,27 @@
             android:paddingTop="32dp"
             android:paddingBottom="28dp">
 
-            <!-- Riga titolo + pulsante lingua -->
+            <!-- Riga titolo (lingua/logout si sono spostati nella sezione Account) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:text="@string/home_welcome"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:alpha="0.85" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_welcome"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:alpha="0.85" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_home"
-                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorOnPrimary" />
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnLanguage"
-                    style="@style/Widget.App.IconButton"
-                    android:layout_width="56dp"
-                    android:layout_height="48dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:contentDescription="@string/cd_change_language"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="@null"
-                    app:icon="@drawable/ic_flag_gb" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnLogout"
-                    style="@style/Widget.App.IconButton"
-                    android:layout_width="56dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:contentDescription="@string/cd_logout"
-                    app:icon="@drawable/ic_logout" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_home"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnPrimary" />
             </LinearLayout>
 
             <!-- Riepilogo numero parcheggi -->

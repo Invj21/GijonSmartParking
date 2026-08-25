@@ -2,6 +2,7 @@ package es.uniovi.federico.gijonsmartparking
 
 import android.app.Application
 import android.util.Log
+import com.google.android.libraries.places.api.Places
 import com.google.firebase.messaging.FirebaseMessaging
 import es.uniovi.federico.gijonsmartparking.data.AppDatabase
 import es.uniovi.federico.gijonsmartparking.data.AuthRepository
@@ -44,6 +45,12 @@ class ParkingApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Places SDK (sezione Account -> indirizzo di casa con autocomplete): stessa API key
+        // del meta-data di Google Maps nel Manifest.
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, getString(R.string.google_maps_key))
+        }
 
         // Feature cloud aggiuntiva (Task 6): mi iscrivo al topic dei promemoria parcheggio,
         // così ricevo tutti i messaggi che mando a quel topic dalla console Firebase.

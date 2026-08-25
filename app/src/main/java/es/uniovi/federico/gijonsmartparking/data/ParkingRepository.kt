@@ -334,6 +334,18 @@ class ParkingRepository(private val parkingDao: ParkingDao,
         }
     }
 
+    /**
+     * Ripulisce SOLO i dati locali legati all'utente (preferiti, posizione auto), senza
+     * chiamare il backend: la chiama l'eliminazione account, quando l'utente sul server
+     * (e quindi le sue righe) non esiste già più.
+     */
+    suspend fun clearLocalUserData() {
+        withContext(Dispatchers.IO) {
+            parkingDao.clearAllFavorites()
+            carLocationDao.deleteCarLocation()
+        }
+    }
+
     suspend fun clearCarLocation() {
         carLocationDao.deleteCarLocation()
 
