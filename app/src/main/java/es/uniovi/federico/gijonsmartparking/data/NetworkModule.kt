@@ -18,11 +18,11 @@ object NetworkModule {
     // server Overpass; il path "interpreter" lo aggiunge l'interfaccia ParkingApiService
     private const val BASE_URL = "https://z.overpass-api.de/api/"
 
-    // URL del MIO backend Flask (Task 1). In sviluppo punta all'emulatore Android
-    // (10.0.2.2 è l'alias che l'emulatore usa per raggiungere il "localhost" del PC host).
-    // Per la demo/deploy reale va sostituito con l'URL pubblico (PythonAnywhere/Docker,
-    // vedi backend/README.md).
-    private const val BACKEND_BASE_URL = "http://10.0.2.2:5000/"
+    // URL del MIO backend Flask (Task 1), pubblicato su PythonAnywhere (vedi
+    // backend/README.md per i passi di deploy). Durante lo sviluppo locale può essere
+    // temporaneamente sostituito con "http://10.0.2.2:5000/" (10.0.2.2 = alias con cui
+    // l'emulatore raggiunge il "localhost" del PC host).
+    private const val BACKEND_BASE_URL = "https://invj21.pythonanywhere.com/"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory()) // così Moshi sa leggere le data class Kotlin
