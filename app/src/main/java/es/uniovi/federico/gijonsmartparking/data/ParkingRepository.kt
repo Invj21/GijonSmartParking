@@ -228,7 +228,8 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                     if (isFavorite) {
                         backendApiService.addFavorite(AddFavoriteRequest(parkingId))
                     } else {
-                        backendApiService.removeFavorite(parkingId)
+                        val response = backendApiService.removeFavorite(parkingId)
+                        if (!response.isSuccessful) throw HttpException(response)
                     }
                 } catch (e: Exception) {
                     // niente rete o backend giù: il preferito resta comunque salvato in locale,
@@ -352,7 +353,8 @@ class ParkingRepository(private val parkingDao: ParkingDao,
         if (tokenManager.hasToken()) {
             withContext(Dispatchers.IO) {
                 try {
-                    backendApiService.deleteCarLocation()
+                    val response = backendApiService.deleteCarLocation()
+                    if (!response.isSuccessful) throw HttpException(response) else Unit
                 } catch (e: Exception) {
                     Log.w("PARKING_SYNC", "Impossibile cancellare la posizione dell'auto sul server: ${e.message}")
                 }

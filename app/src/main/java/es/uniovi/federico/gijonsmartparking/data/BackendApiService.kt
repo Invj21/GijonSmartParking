@@ -60,8 +60,10 @@ interface BackendApiService {
     @POST("favorites")
     suspend fun addFavorite(@Body request: AddFavoriteRequest): FavoriteDto
 
+    // Response<Unit>: stesso motivo di deleteAccount, un 204 ha body null e Retrofit
+    // lancerebbe KotlinNullPointerException con un tipo di ritorno "non-null".
     @DELETE("favorites/{parkingId}")
-    suspend fun removeFavorite(@Path("parkingId") parkingId: Long)
+    suspend fun removeFavorite(@Path("parkingId") parkingId: Long): retrofit2.Response<Unit>
 
     // --- Posizione auto (Task 3 + Task 5: foto opzionale) ---
 
@@ -80,7 +82,7 @@ interface BackendApiService {
     ): CarLocationDto
 
     @DELETE("car-location")
-    suspend fun deleteCarLocation()
+    suspend fun deleteCarLocation(): retrofit2.Response<Unit>
 }
 
 data class RegisterRequest(val email: String, val password: String)
