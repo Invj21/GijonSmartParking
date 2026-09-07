@@ -6,6 +6,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
  * Qui costruisco una volta sola il client di rete (Retrofit + Moshi) e lo riuso.
@@ -57,8 +58,15 @@ object NetworkModule {
             chain.proceed(request)
         }
 
+        // Timeout più larghi dei default OkHttp (10s): il backend gratuito su
+        // PythonAnywhere può metterci qualche secondo in più a rispondere alla prima
+        // richiesta dopo un periodo di inattività, e non voglio che la chiamata fallisca
+        // per un timeout mentre il server sta ancora rispondendo.
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build()
 
         return Retrofit.Builder()
