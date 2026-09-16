@@ -58,8 +58,16 @@ class AccountFragment : Fragment() {
     // la mando solo quando l'utente tocca "Salva".
     private var pendingPhotoFile: File? = null
 
+    // Se l'utente annulla lo scatto, il file vuoto creato in anticipo da createImageFile()
+    // va cancellato e il riferimento azzerato, altrimenti un "Salva" successivo caricherebbe
+    // quel file da 0 byte come foto profilo.
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) pendingPhotoFile?.let { showPendingPhoto(it) }
+        if (success) {
+            pendingPhotoFile?.let { showPendingPhoto(it) }
+        } else {
+            pendingPhotoFile?.delete()
+            pendingPhotoFile = null
+        }
     }
 
     private val pickPhotoLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->

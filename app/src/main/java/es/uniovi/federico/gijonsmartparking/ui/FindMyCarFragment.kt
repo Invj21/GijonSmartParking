@@ -61,9 +61,16 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
     // percorso dell'ultima foto scattata (può essere null se non ho fatto foto)
     private var currentPhotoPath: String? = null
 
-    // launcher della fotocamera: quando lo scatto riesce mostro la foto
+    // launcher della fotocamera: quando lo scatto riesce mostro la foto. Se l'utente annulla,
+    // il file vuoto creato in anticipo da createImageFile() va cancellato e il riferimento
+    // azzerato, altrimenti un "Salva" successivo caricherebbe quel file da 0 byte come foto.
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) { showPhoto(currentPhotoPath, null) }
+        if (success) {
+            showPhoto(currentPhotoPath, null)
+        } else {
+            currentPhotoPath?.let { File(it).delete() }
+            currentPhotoPath = null
+        }
     }
 
     // launcher del permesso posizione: se l'utente accetta, prendo la posizione (e faccio
