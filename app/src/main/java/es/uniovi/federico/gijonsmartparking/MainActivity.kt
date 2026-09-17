@@ -8,8 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
- * L'unica Activity dell'app (single-activity, come consigliato a teoria con il
- * Navigation Component): fa solo da contenitore. Tutte le schermate sono Fragment
+ * L'unica Activity dell'app (single-activity): fa solo da contenitore. Tutte le schermate sono Fragment
  * dentro il NavHostFragment, e la barra in basso permette di spostarsi tra le sezioni.
  */
 class MainActivity : AppCompatActivity() {
@@ -34,8 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // Gestisco i tap della barra a mano (invece del solito setupWithNavController)
-        // perché voglio che toccando "Home" si torni sempre alla home anche quando sono
+        // Gestisco i tap della barra a mano perché voglio che toccando "Home" si torni sempre alla home anche quando sono
         // dentro una pagina figlia (lista, dettaglio...). Stessa cosa sia al tap normale
         // sia al ri-tap della voce già selezionata.
         bottomNav.setOnItemSelectedListener { item ->

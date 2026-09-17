@@ -2,15 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 1. PERMESSI: Devono stare SOPRA il tag <application> -->
+    <!-- PERMESSI -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <!-- Notifiche (promemoria auto Task 6 + push Firebase): richiesto a runtime da Android 13 -->
+    <!-- Notifiche: richiesto a runtime da Android 13 -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- Permesso per la fotocamera (necessario per alcuni modelli) -->
+    <!-- Permesso per la fotocamera -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. FILE PROVIDER: Deve stare DENTRO il tag <application> -->
+        <!-- FILE PROVIDER -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -46,12 +46,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!-- 3. GOOGLE MAPS / PLACES API KEY -->
+        <!-- GOOGLE MAPS / PLACES API KEY -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <!-- 4. Persistenza automatica della lingua scelta (per-app language su API < 33) -->
+        <!-- Persistenza automatica della lingua scelta  -->
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
@@ -61,7 +61,7 @@
                 android:value="true" />
         </service>
 
-        <!-- 5. FIREBASE CLOUD MESSAGING (Task 6) -->
+        <!-- FIREBASE CLOUD MESSAGING  -->
         <service
             android:name=".notifications.ParkingMessagingService"
             android:exported="false">
@@ -70,7 +70,7 @@
             </intent-filter>
         </service>
 
-        <!-- Canale di notifica di default per i push FCM (usato quando l'app è in background) -->
+        <!-- Canale di notifica di default per i push FCM -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="car_reminders" />

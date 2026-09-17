@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sfondo "a pillola" trasparente con solo un contorno, usato per far risaltare testo
+     senza sfondo (es. il divisore "o" tra login ed accesso con Google) su qualsiasi tema:
+     colorOutline è già definito sia per il tema chiaro che per quello scuro. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="999dp" />
+    <stroke
+        android:width="1dp"
+        android:color="?attr/colorOutline" />
+</shape>
