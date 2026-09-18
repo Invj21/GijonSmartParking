@@ -87,7 +87,7 @@ class ParkingDetailFragment : Fragment() {
 
         binding.tvDetailInfo.text = info
 
-        // Apri nelle mappe: uso un Intent implicito con uri "geo:" (come visto a teoria sugli Intent),
+        // Apri nelle mappe: uso un Intent implicito con uri "geo:"
         // così Android propone l'app di mappe installata invece di reinventare la navigazione.
         binding.btnShowMap.setOnClickListener {
             val lat = parking.lat

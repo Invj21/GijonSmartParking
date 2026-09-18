@@ -3,7 +3,7 @@ package es.uniovi.federico.gijonsmartparking.utils
 import java.util.Calendar
 
 /**
- * Classe di appoggio (la metto in "utils" perché non è né UI né dati) che mi serve
+ * Classe di appoggio che mi serve
  * per capire se un parcheggio è aperto leggendo il tag "opening_hours" di OpenStreetMap.
  *
  * OSM ha una sintassi degli orari complicatissima, io gestisco i casi più frequenti:
@@ -22,7 +22,7 @@ object OpeningHoursUtil {
     // "aperto adesso" è solo un caso particolare di "aperto a un certo istante" = ora attuale
     fun isOpenNow(value: String?): Boolean = isOpenAt(value, Calendar.getInstance())
 
-    /** Dice se il parcheggio è aperto nell'istante "time" (lo uso per il filtro data/ora). */
+    /** Dice se il parcheggio è aperto nell'istante "time" (per il filtro data/ora). */
     fun isOpenAt(value: String?, time: Calendar): Boolean {
         // se non so niente lo considero aperto (vedi commento in alto)
         if (value.isNullOrBlank() || value.equals("unknown", true)) return true
@@ -52,7 +52,7 @@ object OpeningHoursUtil {
         return !matchedAnyRule
     }
 
-    /** Tira fuori i giorni coperti dalla regola (es. "Mo-Fr"), null se non ci sono giorni. */
+    /** Tira fuori i giorni coperti dalla regola, null se non ci sono giorni. */
     private fun parseDays(rule: String): Set<Int>? {
         val map = mapOf(
             "mo" to Calendar.MONDAY, "tu" to Calendar.TUESDAY, "we" to Calendar.WEDNESDAY,
@@ -64,7 +64,7 @@ object OpeningHoursUtil {
         val lower = rule.lowercase()
         val result = mutableSetOf<Int>()
 
-        // regex che riconosce sia un giorno singolo ("Sa") sia un intervallo ("Mo-Fr")
+        // regex che riconosce sia un giorno singolo sia un intervallo
         val dayRegex = Regex("(mo|tu|we|th|fr|sa|su)(\\s*-\\s*(mo|tu|we|th|fr|sa|su))?")
         for (m in dayRegex.findAll(lower)) {
             val start = m.groupValues[1]

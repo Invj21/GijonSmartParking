@@ -6,11 +6,11 @@ import kotlinx.parcelize.Parcelize
 /**
  * Modello "di dominio" del parcheggio, cioè come lo penso io a livello concettuale.
  *
- * NOTA onesta: alla fine nell'app uso direttamente [es.uniovi.federico.gijonsmartparking.data.ParkingEntity]
+ * NOTA: alla fine nell'app uso direttamente [es.uniovi.federico.gijonsmartparking.data.ParkingEntity]
  * (l'entità di Room) sia per il database sia per passarla tra i Fragment, perché è già
- * Parcelable e mi evita di duplicare/convertire i dati. Questa classe l'avevo creata
- * all'inizio per separare "modello" e "dato del DB" (come nella divisione in layer vista
- * a teoria) e la tengo come riferimento, ma al momento non è collegata al resto.
+ * Parcelable e mi evita di duplicare/convertire i dati. Questa classe è stata creata
+ * all'inizio per separare "modello" e "dato del DB"
+ * e la tengo come riferimento, ma al momento non è collegata al resto.
  */
 @Parcelize
 data class Parking(

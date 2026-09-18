@@ -28,8 +28,6 @@ class CarReminderWorker(
         val context = applicationContext
         NotificationHelper.ensureChannel(context)
 
-        // Da Android 13 (API 33) le notifiche richiedono un permesso a runtime: se non
-        // l'ho ottenuto non posso mostrarla, ma non è un errore da far ritentare a WorkManager.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
             != PackageManager.PERMISSION_GRANTED

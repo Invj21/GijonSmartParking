@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Login multi-utente (Task 2): scelgo la start destination in base al token
+        // Login multi-utente: scelgo la start destination in base al token
         // salvato. Il grafo NON è impostato via app:navGraph nel layout apposta, così
-        // lo costruisco qui prima che venga mostrato nulla e non c'è "flash" della Home.
+        // lo costruisco qui prima che venga mostrato nulla
         val app = application as ParkingApplication
         val startDestination =
             if (app.tokenManager.hasToken()) R.id.homeFragment else R.id.loginFragment
@@ -34,8 +34,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         // Gestisco i tap della barra a mano perché voglio che toccando "Home" si torni sempre alla home anche quando sono
-        // dentro una pagina figlia (lista, dettaglio...). Stessa cosa sia al tap normale
-        // sia al ri-tap della voce già selezionata.
+        // dentro una pagina figlia.
         bottomNav.setOnItemSelectedListener { item ->
             navigateToTab(navController, item.itemId)
             true

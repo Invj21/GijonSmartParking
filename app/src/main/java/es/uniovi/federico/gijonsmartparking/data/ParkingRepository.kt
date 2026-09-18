@@ -22,7 +22,7 @@ import java.time.OffsetDateTime
  * la ParkingApplication (una specie di dependency injection fatta a mano).
  *
  * backendApiService/tokenManager servono per la sincronizzazione preferiti/posizione auto
- * col MIO backend (Task 3): Room resta SEMPRE la fonte locale (offline-first, come visto
+ * col MIO backend: Room resta SEMPRE la fonte locale (offline-first, come visto
  * a teoria), il backend è "best effort" quando l'utente è loggato e c'è connessione.
  */
 class ParkingRepository(private val parkingDao: ParkingDao,
@@ -63,8 +63,8 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                 val response = apiService.getAsturiasParking(query)
                 Log.d("PARKING_TEST", "Risposta ricevuta. Elementi trovati: ${response.elements.size}")
 
-                // Tengo auto e moto. Regola sul nome: per le AUTO pretendo un nome vero (così
-                // la lista resta pulita, come deciso prima); per le MOTO accetto anche senza nome
+                // Tengo auto e moto. Regola sul nome: per le AUTO pretendo un nome vero;
+                // per le MOTO accetto anche senza nome
                 // perché su OSM quasi nessuna ce l'ha, ma le voglio comunque mostrare (gli darò
                 // un nome generico dopo). In entrambi i casi servono coordinate valide.
                 val parkingElements = response.elements.filter { el ->
@@ -77,7 +77,7 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                         else -> false
                     }
                 }
-                // Prendo le coordinate di tutte le colonnine, mi serviranno per la distanza
+                // Prendo le coordinate di tutte le colonnine
                 val chargingPoints = response.elements
                     .filter { it.tags?.get("amenity") == "charging_station" }
                     .mapNotNull { cs ->
@@ -89,7 +89,7 @@ class ParkingRepository(private val parkingDao: ParkingDao,
 
                 if (parkingElements.isNotEmpty()) {
                     // Mi salvo quali parcheggi erano preferiti PRIMA di svuotare la tabella,
-                    // così dopo posso rimetterli (altrimenti il refresh azzererebbe i cuori).
+                    // così dopo posso rimetterli (il refresh azzererebbe i cuori).
                     val favoriteIds = parkingDao.getFavoriteIds().toSet()
 
                     // Trasformo ogni elemento OSM in una riga del mio database (ParkingEntity)
@@ -128,8 +128,8 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                     parkingDao.insertAll(entities)
                     Log.d("PARKING_TEST", "Salvataggio nel database completato: ${entities.size} record.")
 
-                    // Se sono loggato, i preferiti del backend sono autoritativi (stessi su
-                    // tutti i dispositivi); se la chiamata fallisce tengo quelli locali appena
+                    // Se sono loggato, i preferiti del backend sono gli stessi su
+                    // tutti i dispositivi; se la chiamata fallisce tengo quelli locali appena
                     // ripristinati sopra (offline-first).
                     syncFavoritesFromBackend()
                 } else {
@@ -232,7 +232,7 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                         if (!response.isSuccessful) throw HttpException(response)
                     }
                 } catch (e: Exception) {
-                    // niente rete o backend giù: il preferito resta comunque salvato in locale,
+                    // il preferito resta comunque salvato in locale e
                     // verrà riallineato al prossimo refresh riuscito
                     Log.w("PARKING_SYNC", "Impossibile sincronizzare il preferito: ${e.message}")
                 }
@@ -290,7 +290,7 @@ class ParkingRepository(private val parkingDao: ParkingDao,
     /**
      * Al caricamento della schermata "trova la mia auto" provo prima il backend (dati
      * aggiornati da eventuali altri dispositivi); se fallisce (offline) resta quello che
-     * c'è già in Room, che rimane comunque la fonte mostrata dalla UI (vedi [carLocation]).
+     * c'è già in Room, che rimane comunque la fonte mostrata dalla UI.
      */
     suspend fun syncCarLocationFromBackend() {
         if (!tokenManager.hasToken()) return

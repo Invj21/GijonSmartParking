@@ -14,8 +14,8 @@ interface CarLocationDao {
     @Query("SELECT * FROM car_location_table WHERE id = 1")
     fun getCarLocation(): Flow<CarLocationEntity?>
 
-    // Lettura "una tantum" (non osservabile): mi serve nel repository per leggere la nota
-    // locale prima di sovrascrivere la riga con i dati sincronizzati dal backend (Task 3).
+    // Lettura "una tantum": mi serve nel repository per leggere la nota
+    // locale prima di sovrascrivere la riga con i dati sincronizzati dal backend.
     @Query("SELECT * FROM car_location_table WHERE id = 1")
     suspend fun getCarLocationOnce(): CarLocationEntity?
 

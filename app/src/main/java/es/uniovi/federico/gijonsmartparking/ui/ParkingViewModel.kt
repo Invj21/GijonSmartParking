@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import es.uniovi.federico.gijonsmartparking.data.CarLocationEntity
 
 /**
- * ViewModel della parte parcheggi (è il cuore del pattern MVVM visto a teoria).
+ * ViewModel della parte parcheggi (è il cuore del pattern MVVM).
  * Sta in mezzo tra la UI e il repository: espone i dati alla vista tramite LiveData e
  * NON tiene riferimenti ai Fragment, così sopravvive ai cambi di configurazione
  * (es. rotazione) senza perdere lo stato.
@@ -151,7 +151,7 @@ class ParkingViewModel(private val repository: ParkingRepository) : ViewModel() 
 
     val carLocation: LiveData<CarLocationEntity?> = repository.carLocation.asLiveData()
 
-    /** Chiamato all'apertura di "trova la mia auto": prova a riallineare col backend (Task 3). */
+    /** Chiamato all'apertura di "trova la mia auto": prova a riallineare col backend. */
     fun syncCarLocation() {
         viewModelScope.launch {
             repository.syncCarLocationFromBackend()

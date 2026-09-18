@@ -19,8 +19,8 @@ object NetworkModule {
     // server Overpass; il path "interpreter" lo aggiunge l'interfaccia ParkingApiService
     private const val BASE_URL = "https://z.overpass-api.de/api/"
 
-    // URL del MIO backend Flask (Task 1), pubblicato su PythonAnywhere (vedi
-    // backend/README.md per i passi di deploy). Durante lo sviluppo locale può essere
+    // URL del MIO backend Flask, pubblicato su PythonAnywhere.
+    // Durante lo sviluppo locale può essere
     // temporaneamente sostituito con "http://10.0.2.2:5000/" (10.0.2.2 = alias con cui
     // l'emulatore raggiunge il "localhost" del PC host).
     private const val BACKEND_BASE_URL = "https://invj21.pythonanywhere.com/"
@@ -39,8 +39,7 @@ object NetworkModule {
 
     /**
      * Costruisco il client per il backend proprio con un Interceptor OkHttp che allega
-     * "Authorization: Bearer <token>" a ogni richiesta quando c'è un token salvato
-     * (stesso schema della slide "API Security"). Il tokenManager arriva da fuori
+     * "Authorization: Bearer <token>" a ogni richiesta quando c'è un token salvato. Il tokenManager arriva da fuori
      * (creato una volta sola in ParkingApplication) perché qui, essendo un object,
      * non ho un Context per crearlo da solo.
      */
@@ -78,8 +77,7 @@ object NetworkModule {
     }
 
     /**
-     * Il backend risponde con path relativi per le foto (es. "/uploads/xyz.jpg", vedi
-     * backend/app.py). Qui li trasformo in URL assoluti da passare a Glide.
+     * Il backend risponde con path relativi per le foto. Qui li trasformo in URL assoluti da passare a Glide.
      */
     fun resolveBackendUrl(path: String): String {
         if (path.startsWith("http")) return path

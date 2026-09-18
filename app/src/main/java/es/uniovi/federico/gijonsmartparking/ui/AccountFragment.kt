@@ -54,7 +54,7 @@ class AccountFragment : Fragment() {
         ParkingViewModelFactory((requireActivity().application as ParkingApplication).repository)
     }
 
-    // Foto scattata/scelta ma non ancora salvata sul backend: la mostro subito (ottimistico),
+    // Foto scattata/scelta ma non ancora salvata sul backend: la mostro subito,
     // la mando solo quando l'utente tocca "Salva".
     private var pendingPhotoFile: File? = null
 

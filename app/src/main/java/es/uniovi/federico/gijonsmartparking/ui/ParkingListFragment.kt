@@ -49,7 +49,7 @@ class ParkingListFragment : Fragment() {
         ParkingViewModelFactory((requireActivity().application as ParkingApplication).repository)
     }
 
-    // client dei Google Play Services per ottenere la posizione (visto a teoria, geolocalización)
+    // client dei Google Play Services per ottenere la posizione
     private val fusedLocationClient by lazy {
         LocationServices.getFusedLocationProviderClient(requireContext())
     }
@@ -213,7 +213,7 @@ class ParkingListFragment : Fragment() {
         dialog.show()
     }
 
-    // formatto data+ora nella lingua attiva dell'app (es. "gio 26 giu, 18:30")
+    // formatto data+ora nella lingua attiva dell'app
     private fun formatDateTime(time: Calendar): String {
         val locale = resources.configuration.locales[0]
         return SimpleDateFormat("EEE d MMM, HH:mm", locale).format(time.time)
@@ -244,7 +244,7 @@ class ParkingListFragment : Fragment() {
                 }
             }
         } catch (e: SecurityException) {
-            // non dovrebbe succedere (ho controllato il permesso), ma per sicurezza lo gestisco
+            // non dovrebbe succedere, ma per sicurezza lo gestisco
             e.printStackTrace()
         }
     }

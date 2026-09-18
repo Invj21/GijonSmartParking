@@ -23,11 +23,11 @@ class ParkingApplication : Application() {
     // by lazy = creo il database solo la prima volta che qualcuno lo usa davvero
     private val database by lazy { AppDatabase.getDatabase(this) }
 
-    // Token JWT dell'utente loggato (login multi-utente, Task 2)
+    // Token JWT dell'utente loggato (login multi-utente)
     val tokenManager by lazy { TokenManager(this) }
 
     // Un solo client per il MIO backend, condiviso tra AuthRepository e ParkingRepository
-    // (preferiti/posizione auto, Task 3): così l'interceptor del token è creato una volta sola.
+    // (preferiti/posizione auto): così l'interceptor del token è creato una volta sola.
     private val backendApiService by lazy { NetworkModule.createBackendApiService(tokenManager) }
 
     val authRepository by lazy { AuthRepository(backendApiService, tokenManager) }
@@ -52,7 +52,7 @@ class ParkingApplication : Application() {
             Places.initialize(applicationContext, getString(R.string.google_maps_key))
         }
 
-        // Feature cloud aggiuntiva (Task 6): mi iscrivo al topic dei promemoria parcheggio,
+        // Feature cloud aggiuntiva: mi iscrivo al topic dei promemoria parcheggio,
         // così ricevo tutti i messaggi che mando a quel topic dalla console Firebase.
         FirebaseMessaging.getInstance().subscribeToTopic(ParkingMessagingService.TOPIC_PARKING_REMINDERS)
             .addOnFailureListener { e ->

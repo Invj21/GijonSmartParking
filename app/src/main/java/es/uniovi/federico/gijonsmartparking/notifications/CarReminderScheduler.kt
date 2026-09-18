@@ -10,9 +10,9 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 /**
- * Programma/cancella il promemoria "non dimenticare l'auto" (Task 6). Uso
+ * Programma/cancella il promemoria "non dimenticare l'auto". Uso
  * enqueueUniqueWork con REPLACE così, se salvo una nuova posizione, il vecchio promemoria
- * (per il parcheggio precedente) viene sostituito invece di accumularsi.
+ * viene sostituito invece di accumularsi.
  */
 object CarReminderScheduler {
 

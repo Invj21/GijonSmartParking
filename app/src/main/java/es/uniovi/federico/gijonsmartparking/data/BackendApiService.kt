@@ -13,7 +13,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 /**
- * Interfaccia Retrofit per il MIO backend (Flask, Task 1), non per Overpass.
+ * Interfaccia Retrofit per il MIO backend (Flask), non per Overpass.
  * Stesso schema di ParkingApiService: descrivo solo "com'è fatta" la chiamata.
  *
  * Il path è relativo alla BACKEND_BASE_URL definita in NetworkModule.
@@ -52,7 +52,7 @@ interface BackendApiService {
         @Part photo: MultipartBody.Part
     ): AccountDto
 
-    // --- Preferiti (Task 3) ---
+    // --- Preferiti ---
 
     @GET("favorites")
     suspend fun getFavorites(): List<FavoriteDto>
@@ -65,7 +65,7 @@ interface BackendApiService {
     @DELETE("favorites/{parkingId}")
     suspend fun removeFavorite(@Path("parkingId") parkingId: Long): retrofit2.Response<Unit>
 
-    // --- Posizione auto (Task 3 + Task 5: foto opzionale) ---
+    // --- Posizione auto  ---
 
     @GET("car-location")
     suspend fun getCarLocation(): CarLocationDto

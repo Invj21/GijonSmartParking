@@ -15,9 +15,8 @@ import es.uniovi.federico.gijonsmartparking.MainActivity
 import es.uniovi.federico.gijonsmartparking.R
 
 /**
- * Riceve i push da Firebase Cloud Messaging (Task 6, la "feature cloud aggiuntiva"
- * indicata a teoria). L'app si iscrive al topic "parking_reminders" (vedi
- * ParkingApplication.onCreate); ogni messaggio mandato a quel topic dalla console
+ * Riceve i push da Firebase Cloud Messaging. L'app si iscrive al topic "parking_reminders";
+ * ogni messaggio mandato a quel topic dalla console
  * Firebase arriva qui e lo mostro come notifica locale, stesso canale del promemoria
  * WorkManager.
  */
@@ -38,7 +37,7 @@ class ParkingMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        // Il backend proprio (Task 1) non gestisce l'invio di push mirate: qui basta il
+        // Il backend proprio non gestisce l'invio di push mirate: qui basta il
         // topic "parking_reminders" (broadcast a tutti gli iscritti dalla console Firebase).
         Log.d("FCM_TOKEN", "Nuovo token FCM: $token")
     }

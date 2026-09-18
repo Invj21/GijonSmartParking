@@ -38,7 +38,7 @@ interface ParkingDao {
     @Query("DELETE FROM parking_table")
     suspend fun deleteAll()
 
-    // --- Sincronizzazione preferiti col backend (Task 3) ---
+    // --- Sincronizzazione preferiti col backend  ---
 
     @Query("UPDATE parking_table SET isFavorite = 0")
     suspend fun clearAllFavorites()
@@ -47,8 +47,8 @@ interface ParkingDao {
     suspend fun markFavorites(ids: List<Long>)
 
     /**
-     * Sostituisco i preferiti locali con quelli del backend (autoritativo per un utente
-     * loggato). @Transaction così l'interfaccia non vede mai uno stato intermedio "tutti
+     * Sostituisco i preferiti locali con quelli del backend.
+     * @Transaction così l'interfaccia non vede mai uno stato intermedio "tutti
      * sfavoriti" tra le due query.
      */
     @Transaction

@@ -45,7 +45,7 @@ import java.util.*
  * così dopo la ritrovo e mi ci faccio portare. La posizione salvata sta nel database
  * (tramite repository/ViewModel), la foto la salvo come file e ne tengo solo il percorso.
  *
- * Implementa anche la bussola (Task 4): SensorEventListener riceve l'orientamento del
+ * Implementa anche la bussola: SensorEventListener riceve l'orientamento del
  * telefono, lo combino con la posizione GPS live per calcolare in che direzione ruotare
  * la freccia (CompassArrowView) perché punti verso l'auto parcheggiata.
  */
@@ -82,7 +82,7 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
         }
     }
 
-    // launcher del permesso notifiche (Task 6, richiesto da Android 13+): se nego, il
+    // launcher del permesso notifiche: se nego, il
     // promemoria resta comunque programmato ma CarReminderWorker non mostrerà nulla
     // (ricontrolla da solo il permesso al momento di notificare).
     private val requestNotificationPermissionLauncher =
@@ -138,7 +138,7 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
             magnetometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
         }
 
-        // Provo a riallineare con l'ultima posizione salvata sul backend (Task 3): se offline
+        // Provo a riallineare con l'ultima posizione salvata sul backend: se offline
         // o non loggato, non succede nulla e resta quella già in Room.
         viewModel.syncCarLocation()
 
@@ -202,8 +202,8 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
-        // Registro i sensori/la posizione solo mentre la schermata è visibile (lifecycle-aware,
-        // come richiesto a teoria): niente batteria sprecata quando sono su un'altra pagina.
+        // Registro i sensori/la posizione solo mentre la schermata è visibile:
+        // niente batteria sprecata quando sono su un'altra pagina.
         val rotation = rotationVectorSensor
         if (rotation != null) {
             sensorManager.registerListener(this, rotation, SensorManager.SENSOR_DELAY_UI)
@@ -313,8 +313,7 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
 
     /**
      * Mostro la foto del posto auto: preferisco il file LOCALE (quello appena scattato su
-     * questo dispositivo), altrimenti quella sincronizzata dal backend (Task 3: posizione
-     * salvata da un altro dispositivo, o app reinstallata). Uso Glide (già tra le dipendenze
+     * questo dispositivo), altrimenti quella sincronizzata dal backend. Uso Glide (già tra le dipendenze
      * del progetto) invece di BitmapFactory perché carica sia file locali sia URL remoti con
      * la stessa chiamata, in background.
      */
@@ -356,7 +355,7 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
         }
     }
 
-    // chiedo una posizione nuova di zecca (più lenta ma affidabile) quando lastLocation è null
+    // chiedo una posizione nuova quando lastLocation è null
     @SuppressLint("MissingPermission")
     private fun requestFreshLocation() {
         fusedClient.getCurrentLocation(
@@ -379,7 +378,7 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
         viewModel.saveCarLocation(lat, lon, note, currentPhotoPath)
         Toast.makeText(context, getString(R.string.toast_location_saved), Toast.LENGTH_SHORT).show()
 
-        // Task 6: programmo il promemoria "non dimenticare l'auto" e, se serve, chiedo il
+        // programmo il promemoria "non dimenticare l'auto" e, se serve, chiedo il
         // permesso per le notifiche (Android 13+).
         requestNotificationPermissionIfNeeded()
         CarReminderScheduler.schedule(requireContext(), System.currentTimeMillis())

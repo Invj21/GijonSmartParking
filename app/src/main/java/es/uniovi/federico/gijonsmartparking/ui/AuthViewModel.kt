@@ -20,7 +20,7 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     private val _authState = MutableLiveData<AuthUiState>(AuthUiState.Idle)
     val authState: LiveData<AuthUiState> get() = _authState
 
-    // Profilo (sezione Account): separato da authState perché il caricamento iniziale
+    // Profilo: separato da authState perché il caricamento iniziale
     // non deve mostrare la rotellina/errori di login sul resto della schermata.
     private val _profile = MutableLiveData<AccountDto?>()
     val profile: LiveData<AccountDto?> get() = _profile
