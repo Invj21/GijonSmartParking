@@ -118,20 +118,27 @@ class ParkingListFragment : Fragment() {
                 val time = selectedDateTime
                 // banner: cambia testo se sto guardando "ora" o un momento futuro
                 binding.tvAvailableBanner.text = if (time == null) {
-                    getString(R.string.available_banner, shown.size)
+                    resources.getQuantityString(R.plurals.available_banner, shown.size, shown.size)
                 } else {
-                    getString(R.string.available_banner_at, shown.size, formatDateTime(time))
+                    resources.getQuantityString(R.plurals.available_banner_at, shown.size, shown.size, formatDateTime(time))
                 }
                 binding.btnPickDateTime.text =
                     if (time == null) getString(R.string.datetime_now) else formatDateTime(time)
             }
 
-            // messaggio "nessun preferito" quando la lista preferiti è vuota
-            if (shown.isEmpty() && favoritesOnly) {
-                binding.tvEmpty.visibility = View.VISIBLE
-                binding.tvEmpty.text = getString(R.string.favorites_empty)
-            } else {
-                binding.tvEmpty.visibility = View.GONE
+            // messaggio quando non c'è niente da mostrare: nessun preferito, oppure
+            // ricerca/filtri/orario scelti che non corrispondono a nessun parcheggio
+            val searching = binding.searchView.query.isNotEmpty() || viewModel.filter.value?.isActive == true
+            when {
+                shown.isEmpty() && favoritesOnly -> {
+                    binding.tvEmpty.visibility = View.VISIBLE
+                    binding.tvEmpty.text = getString(R.string.favorites_empty)
+                }
+                shown.isEmpty() && (searching || availableOnly) -> {
+                    binding.tvEmpty.visibility = View.VISIBLE
+                    binding.tvEmpty.text = getString(R.string.search_empty)
+                }
+                else -> binding.tvEmpty.visibility = View.GONE
             }
         }
 

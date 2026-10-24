@@ -30,6 +30,7 @@ import es.uniovi.federico.gijonsmartparking.R
 import es.uniovi.federico.gijonsmartparking.data.AccountDto
 import es.uniovi.federico.gijonsmartparking.data.NetworkModule
 import es.uniovi.federico.gijonsmartparking.databinding.FragmentAccountBinding
+import es.uniovi.federico.gijonsmartparking.notifications.CarReminderScheduler
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -121,8 +122,12 @@ class AccountFragment : Fragment() {
 
         // Logout: cancello il token e torno alla schermata di login, svuotando tutto
         // il back stack (nav_graph = id del grafo radice) così non si può tornare indietro.
+        // Pulisco anche preferiti/posizione auto locali e il promemoria: sono dell'utente
+        // che esce, non devono vederli (o riceverli) l'utente che accede dopo sullo stesso telefono.
         binding.btnLogout.setOnClickListener {
             authViewModel.logout()
+            parkingViewModel.clearLocalUserData()
+            CarReminderScheduler.cancel(requireContext())
             findNavController().navigate(
                 R.id.loginFragment,
                 null,
@@ -143,6 +148,7 @@ class AccountFragment : Fragment() {
                     // niente più account sul backend: pulisco anche i dati locali legati
                     // all'utente (preferiti, posizione auto) prima di tornare al login.
                     parkingViewModel.clearLocalUserData()
+                    CarReminderScheduler.cancel(requireContext())
                     findNavController().navigate(
                         R.id.loginFragment,
                         null,

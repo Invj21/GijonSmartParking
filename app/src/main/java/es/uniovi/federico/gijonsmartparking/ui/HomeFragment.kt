@@ -70,11 +70,11 @@ class HomeFragment : Fragment() {
 
         // observe: ogni volta che la lista cambia aggiorno i tre contatori in home
         viewModel.parkingList.observe(viewLifecycleOwner) { list ->
-            binding.tvTotalCount.text = "${list.size} ${getString(R.string.parking_count_label)}"
+            binding.tvTotalCount.text = resources.getQuantityString(R.plurals.home_parking_found, list.size, list.size)
             val openNow = list.count { OpeningHoursUtil.isOpenNow(it.openingHours) }
-            binding.tvAvailableCount.text = getString(R.string.home_available_count, openNow)
+            binding.tvAvailableCount.text = resources.getQuantityString(R.plurals.home_available_count, openNow, openNow)
             val favorites = list.count { it.isFavorite }
-            binding.tvFavoritesCount.text = getString(R.string.home_favorites_count, favorites)
+            binding.tvFavoritesCount.text = resources.getQuantityString(R.plurals.home_favorites_count, favorites, favorites)
         }
     }
 

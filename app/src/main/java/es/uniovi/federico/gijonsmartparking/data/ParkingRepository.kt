@@ -3,6 +3,8 @@ package es.uniovi.federico.gijonsmartparking.data
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -10,6 +12,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
+import java.io.IOException
 import java.time.OffsetDateTime
 
 /**
@@ -29,10 +32,14 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                         private val carLocationDao: CarLocationDao,
                         private val apiService: ParkingApiService,
                         private val backendApiService: BackendApiService,
-                        private val tokenManager: TokenManager) {
+                        private val tokenManager: TokenManager,
+                        private val pendingSync: PendingSyncStore) {
 
     // Lista dei parcheggi sempre aggiornata dal DB: la passo così com'è al ViewModel
     val allParking: Flow<List<ParkingEntity>> = parkingDao.getAllParking()
+
+    // una sola sincronizzazione col backend alla volta (preferiti e posizione auto)
+    private val syncMutex = Mutex()
 
     /**
      * Scarica i parcheggi da OpenStreetMap e li salva nel database.
@@ -124,8 +131,7 @@ class ParkingRepository(private val parkingDao: ParkingDao,
                     }
 
                     // svuoto e reinserisco: così il DB ha sempre i dati freschi di tutta l'Asturia
-                    parkingDao.deleteAll()
-                    parkingDao.insertAll(entities)
+                    parkingDao.replaceAll(entities)
                     Log.d("PARKING_TEST", "Salvataggio nel database completato: ${entities.size} record.")
 
                     // Se sono loggato, i preferiti del backend sono gli stessi su
@@ -225,30 +231,73 @@ class ParkingRepository(private val parkingDao: ParkingDao,
 
             if (tokenManager.hasToken()) {
                 try {
-                    if (isFavorite) {
-                        backendApiService.addFavorite(AddFavoriteRequest(parkingId))
-                    } else {
-                        val response = backendApiService.removeFavorite(parkingId)
-                        if (!response.isSuccessful) throw HttpException(response)
-                    }
+                    pushFavorite(parkingId, isFavorite)
+                    pendingSync.resolveFavorite(parkingId)
                 } catch (e: Exception) {
-                    // il preferito resta comunque salvato in locale e
-                    // verrà riallineato al prossimo refresh riuscito
-                    Log.w("PARKING_SYNC", "Impossibile sincronizzare il preferito: ${e.message}")
+                    // il preferito resta salvato in locale e viene messo in coda: sarà
+                    // inviato al server alla prossima sincronizzazione riuscita
+                    pendingSync.queueFavorite(parkingId, isFavorite)
+                    Log.w("PARKING_SYNC", "Preferito in coda, server non raggiungibile: ${e.message}")
                 }
             }
         }
     }
 
-    /** Scarico i preferiti dal backend e li applico a Room (autoritativo per l'utente loggato). */
-    private suspend fun syncFavoritesFromBackend() {
-        if (!tokenManager.hasToken()) return
-        try {
-            val remoteIds = backendApiService.getFavorites().map { it.parkingId }
-            parkingDao.replaceFavorites(remoteIds)
-        } catch (e: Exception) {
-            Log.w("PARKING_SYNC", "Impossibile scaricare i preferiti dal server: ${e.message}")
+    private suspend fun pushFavorite(parkingId: Long, isFavorite: Boolean) {
+        if (isFavorite) {
+            backendApiService.addFavorite(AddFavoriteRequest(parkingId))
+        } else {
+            val response = backendApiService.removeFavorite(parkingId)
+            if (!response.isSuccessful && response.code() != 404) throw HttpException(response)
         }
+    }
+
+    private suspend fun flushPendingFavorites() {
+        for (id in pendingSync.favoriteAdds()) {
+            try {
+                pushFavorite(id, true)
+                pendingSync.resolveFavorite(id)
+            } catch (e: IOException) {
+                throw e
+            } catch (e: Exception) {
+                Log.w("PARKING_SYNC", "Preferito $id non inviato: ${e.message}")
+            }
+        }
+        for (id in pendingSync.favoriteRemoves()) {
+            try {
+                pushFavorite(id, false)
+                pendingSync.resolveFavorite(id)
+            } catch (e: IOException) {
+                throw e
+            } catch (e: Exception) {
+                Log.w("PARKING_SYNC", "Rimozione del preferito $id non inviata: ${e.message}")
+            }
+        }
+    }
+
+    /**
+     * Invia le modifiche in coda, poi scarica i preferiti del backend e li applica a Room
+     * tenendo conto delle modifiche ancora non inviate.
+     */
+    suspend fun syncFavoritesFromBackend() {
+        syncMutex.withLock {
+            if (!tokenManager.hasToken()) return
+            try {
+                flushPendingFavorites()
+                val remoteIds = backendApiService.getFavorites().map { it.parkingId }
+                parkingDao.replaceFavorites(
+                    FavoriteMerge.merge(remoteIds, pendingSync.favoriteAdds(), pendingSync.favoriteRemoves())
+                )
+            } catch (e: Exception) {
+                Log.w("PARKING_SYNC", "Impossibile scaricare i preferiti dal server: ${e.message}")
+            }
+        }
+    }
+
+    /** Preferiti e posizione dell'auto: non dipendono dal download del catalogo. */
+    suspend fun syncUserData() {
+        syncFavoritesFromBackend()
+        syncCarLocationFromBackend()
     }
 
     // --- Parte "trova la mia auto": stesso schema, ma sulla tabella della posizione ---
@@ -265,26 +314,38 @@ class ParkingRepository(private val parkingDao: ParkingDao,
         )
         // Room prima di tutto: funziona sempre, anche senza account/rete
         carLocationDao.saveCarLocation(location)
+        pendingSync.setCarDeletePending(false)
 
         if (tokenManager.hasToken()) {
             withContext(Dispatchers.IO) {
                 try {
-                    val photoFile = imagePath?.let { File(it) }?.takeIf { it.exists() }
-                    if (photoFile != null) {
-                        val latPart = lat.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-                        val lngPart = lon.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-                        val photoPart = MultipartBody.Part.createFormData(
-                            "photo", photoFile.name, photoFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        )
-                        backendApiService.saveCarLocationWithPhoto(latPart, lngPart, photoPart)
-                    } else {
-                        backendApiService.saveCarLocation(SaveCarLocationRequest(lat, lon))
-                    }
+                    uploadCarLocation(lat, lon, imagePath)
+                    pendingSync.setCarUploadPending(false)
                 } catch (e: Exception) {
-                    Log.w("PARKING_SYNC", "Impossibile sincronizzare la posizione dell'auto: ${e.message}")
+                    pendingSync.setCarUploadPending(true)
+                    Log.w("PARKING_SYNC", "Posizione dell'auto in coda, server non raggiungibile: ${e.message}")
                 }
             }
         }
+    }
+
+    private suspend fun uploadCarLocation(lat: Double, lon: Double, imagePath: String?) {
+        val photoFile = imagePath?.let { File(it) }?.takeIf { it.exists() }
+        if (photoFile != null) {
+            val latPart = lat.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val lngPart = lon.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val photoPart = MultipartBody.Part.createFormData(
+                "photo", photoFile.name, photoFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            )
+            backendApiService.saveCarLocationWithPhoto(latPart, lngPart, photoPart)
+        } else {
+            backendApiService.saveCarLocation(SaveCarLocationRequest(lat, lon))
+        }
+    }
+
+    private suspend fun deleteCarLocationOnServer() {
+        val response = backendApiService.deleteCarLocation()
+        if (!response.isSuccessful && response.code() != 404) throw HttpException(response)
     }
 
     /**
@@ -294,44 +355,61 @@ class ParkingRepository(private val parkingDao: ParkingDao,
      */
     suspend fun syncCarLocationFromBackend() {
         if (!tokenManager.hasToken()) return
-        withContext(Dispatchers.IO) {
-            try {
-                val remote = backendApiService.getCarLocation()
-                // la nota non esiste sul backend (solo lat/lng/foto): tengo quella locale
-                val local = carLocationDao.getCarLocationOnce()
-                val timestamp = runCatching {
-                    OffsetDateTime.parse(remote.savedAt).toInstant().toEpochMilli()
-                }.getOrDefault(System.currentTimeMillis())
-
-                // Se la posizione locale è la STESSA di quella appena scaricata (stesso
-                // dispositivo che l'ha salvata) tengo il file della foto locale invece di
-                // ributtarmi sulla rete per un'immagine che ho già sul disco.
-                val sameLocation = local != null &&
-                        kotlin.math.abs(local.latitude - remote.lat) < 0.0001 &&
-                        kotlin.math.abs(local.longitude - remote.lng) < 0.0001
-                val localPhotoStillValid = sameLocation && local?.imagePath?.let { File(it).exists() } == true
-
-                carLocationDao.saveCarLocation(
-                    CarLocationEntity(
-                        latitude = remote.lat,
-                        longitude = remote.lng,
-                        note = local?.note ?: "",
-                        timestamp = timestamp,
-                        imagePath = if (localPhotoStillValid) local?.imagePath else null,
-                        remotePhotoUrl = if (localPhotoStillValid) null else
-                            remote.photoUrl?.let { NetworkModule.resolveBackendUrl(it) }
-                    )
-                )
-            } catch (e: HttpException) {
-                // 404 = nessuna posizione salvata sul server: non è un errore, tengo quella locale
-                if (e.code() != 404) {
-                    Log.w("PARKING_SYNC", "Errore nel leggere la posizione dell'auto dal server: ${e.message}")
-                } else {
-                    Unit
-                }
-            } catch (e: Exception) {
-                Log.w("PARKING_SYNC", "Impossibile contattare il server per la posizione dell'auto: ${e.message}")
+        syncMutex.withLock {
+            withContext(Dispatchers.IO) {
+                syncCarLocation()
             }
+        }
+    }
+
+    private suspend fun syncCarLocation() {
+        try {
+            // prima mando al server quello che l'utente ha fatto offline: se non ci riesco
+            // lascio com'è la posizione locale, senza sostituirla con una copia più vecchia
+            if (pendingSync.isCarDeletePending()) {
+                deleteCarLocationOnServer()
+                pendingSync.setCarDeletePending(false)
+            }
+            if (pendingSync.isCarUploadPending()) {
+                carLocationDao.getCarLocationOnce()?.let { uploadCarLocation(it.latitude, it.longitude, it.imagePath) }
+                pendingSync.setCarUploadPending(false)
+            }
+
+            val remote = backendApiService.getCarLocation()
+            // la nota non esiste sul backend (solo lat/lng/foto): tengo quella locale
+            val local = carLocationDao.getCarLocationOnce()
+            val timestamp = runCatching {
+                OffsetDateTime.parse(remote.savedAt).toInstant().toEpochMilli()
+            }.getOrDefault(System.currentTimeMillis())
+
+            // Se la posizione locale è la STESSA di quella appena scaricata (stesso
+            // dispositivo che l'ha salvata) tengo il file della foto locale invece di
+            // ributtarmi sulla rete per un'immagine che ho già sul disco.
+            val sameLocation = local != null &&
+                    kotlin.math.abs(local.latitude - remote.lat) < 0.0001 &&
+                    kotlin.math.abs(local.longitude - remote.lng) < 0.0001
+            val localPhotoStillValid = sameLocation && local?.imagePath?.let { File(it).exists() } == true
+
+            carLocationDao.saveCarLocation(
+                CarLocationEntity(
+                    latitude = remote.lat,
+                    longitude = remote.lng,
+                    note = local?.note ?: "",
+                    timestamp = timestamp,
+                    imagePath = if (localPhotoStillValid) local?.imagePath else null,
+                    remotePhotoUrl = if (localPhotoStillValid) null else
+                        remote.photoUrl?.let { NetworkModule.resolveBackendUrl(it) }
+                )
+            )
+        } catch (e: HttpException) {
+            // 404 = nessuna posizione salvata sul server: non è un errore, tengo quella locale
+            if (e.code() != 404) {
+                Log.w("PARKING_SYNC", "Errore nel leggere la posizione dell'auto dal server: ${e.message}")
+            } else {
+                Unit
+            }
+        } catch (e: Exception) {
+            Log.w("PARKING_SYNC", "Impossibile contattare il server per la posizione dell'auto: ${e.message}")
         }
     }
 
@@ -344,19 +422,22 @@ class ParkingRepository(private val parkingDao: ParkingDao,
         withContext(Dispatchers.IO) {
             parkingDao.clearAllFavorites()
             carLocationDao.deleteCarLocation()
+            pendingSync.clear()
         }
     }
 
     suspend fun clearCarLocation() {
         carLocationDao.deleteCarLocation()
+        pendingSync.setCarUploadPending(false)
 
         if (tokenManager.hasToken()) {
             withContext(Dispatchers.IO) {
                 try {
-                    val response = backendApiService.deleteCarLocation()
-                    if (!response.isSuccessful) throw HttpException(response) else Unit
+                    deleteCarLocationOnServer()
+                    pendingSync.setCarDeletePending(false)
                 } catch (e: Exception) {
-                    Log.w("PARKING_SYNC", "Impossibile cancellare la posizione dell'auto sul server: ${e.message}")
+                    pendingSync.setCarDeletePending(true)
+                    Log.w("PARKING_SYNC", "Rimozione dell'auto in coda, server non raggiungibile: ${e.message}")
                 }
             }
         }

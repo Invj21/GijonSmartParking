@@ -3,6 +3,7 @@ package es.uniovi.federico.gijonsmartparking.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +12,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.CancellationTokenSource
 import androidx.navigation.fragment.findNavController
 import es.uniovi.federico.gijonsmartparking.ParkingApplication
 import es.uniovi.federico.gijonsmartparking.R
+import es.uniovi.federico.gijonsmartparking.data.ParkingEntity
 
 /**
  * Mostra i parcheggi sulla mappa di Google (Google Play Services). Implemento
@@ -35,11 +40,18 @@ class ParkingMapFragment : Fragment(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
 
+    private val fusedClient by lazy { LocationServices.getFusedLocationProviderClient(requireContext()) }
+
+    // la telecamera si posiziona una sola volta per apertura della mappa: prima sulla posizione
+    // dell'utente, solo se non è disponibile sul primo parcheggio della lista
+    private var cameraPositioned = false
+    private var userLocationResolved = false
+
     // permesso posizione per mostrare il puntino blu "tu sei qui"
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted) enableMyLocation()
+        if (granted) enableMyLocation() else onUserLocationUnavailable()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,6 +68,9 @@ class ParkingMapFragment : Fragment(), OnMapReadyCallback {
     // chiamato quando la mappa è pronta da usare
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
+        // il fragment può restare nel back stack mentre la vista viene ricreata: riparto da zero
+        cameraPositioned = false
+        userLocationResolved = false
 
         // attivo la posizione attuale del telefono (chiedendo il permesso se manca)
         if (hasLocationPermission()) {
@@ -78,9 +93,8 @@ class ParkingMapFragment : Fragment(), OnMapReadyCallback {
                             .snippet(parking.city)
                     )
                 }
-                // sposto la telecamera sul primo parcheggio così non parto in mezzo all'oceano
-                val firstParking = LatLng(parkings[0].lat, parkings[0].lon)
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(firstParking, 13f))
+                // se la posizione dell'utente non c'è, parto dal primo parcheggio
+                if (userLocationResolved) moveToFirstParking(parkings)
             }
         }
 
@@ -106,5 +120,52 @@ class ParkingMapFragment : Fragment(), OnMapReadyCallback {
         if (!hasLocationPermission()) return
         googleMap?.isMyLocationEnabled = true                       // puntino blu
         googleMap?.uiSettings?.isMyLocationButtonEnabled = true     // bottone "centra su di me"
+        centerOnUserLocation()
+    }
+
+    // lastLocation è spesso null (cache vuota): in quel caso chiedo una posizione "fresca"
+    @SuppressLint("MissingPermission")
+    private fun centerOnUserLocation() {
+        fusedClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) onUserLocation(location) else requestFreshLocation()
+        }.addOnFailureListener {
+            requestFreshLocation()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestFreshLocation() {
+        fusedClient.getCurrentLocation(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            CancellationTokenSource().token
+        ).addOnSuccessListener { fresh ->
+            if (fresh != null) onUserLocation(fresh) else onUserLocationUnavailable()
+        }.addOnFailureListener {
+            onUserLocationUnavailable()
+        }
+    }
+
+    private fun onUserLocation(location: Location) {
+        userLocationResolved = true
+        // la risposta è asincrona: se nel frattempo la vista è stata distrutta non tocco la mappa
+        if (view == null || cameraPositioned) return
+        cameraPositioned = true
+        val me = LatLng(location.latitude, location.longitude)
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 14f))
+    }
+
+    // niente permesso o niente posizione: ripiego sul primo parcheggio (se la lista è già
+    // arrivata; altrimenti ci pensa l'observer, perché userLocationResolved ora è true)
+    private fun onUserLocationUnavailable() {
+        userLocationResolved = true
+        viewModel.parkingList.value?.let { moveToFirstParking(it) }
+    }
+
+    // sposto la telecamera sul primo parcheggio così non parto in mezzo all'oceano
+    private fun moveToFirstParking(parkings: List<ParkingEntity>) {
+        if (view == null || cameraPositioned || parkings.isEmpty()) return
+        cameraPositioned = true
+        val firstParking = LatLng(parkings[0].lat, parkings[0].lon)
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(firstParking, 13f))
     }
 }

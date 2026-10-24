@@ -31,25 +31,28 @@ object OpeningHoursUtil {
         val day = time.get(Calendar.DAY_OF_WEEK) // 1 = Domenica ... 7 = Sabato
         val minutes = time.get(Calendar.HOUR_OF_DAY) * 60 + time.get(Calendar.MINUTE)
 
-        var matchedAnyRule = false
+        var readableRule = false
 
         // In OSM le varie regole sono separate dal ";", quindi le esamino una a una
         for (rawRule in value.split(";")) {
             val rule = rawRule.trim()
             if (rule.isEmpty()) continue
 
+            val ranges = extractTimeRanges(rule)
+            // regola senza fasce orarie leggibili (es. "Su off"): non dice nulla sull'apertura
+            if (ranges.isEmpty()) continue
+            readableRule = true
+
             val days = parseDays(rule)
             // se la regola vale solo per certi giorni e oggi non c'è, la salto
             if (days != null && day !in days) continue
 
-            for (range in extractTimeRanges(rule)) {
-                matchedAnyRule = true
-                if (minutes in range) return true
-            }
+            if (ranges.any { minutes in it }) return true
         }
 
-        // se non sono riuscito a leggere nessun orario, di nuovo meglio dire "aperto"
-        return !matchedAnyRule
+        // orari leggibili ma nessuna fascia contiene l'istante (o valgono solo per altri giorni):
+        // chiuso. Se invece non ho capito nessun orario, meglio dire "aperto".
+        return !readableRule
     }
 
     /** Tira fuori i giorni coperti dalla regola, null se non ci sono giorni. */

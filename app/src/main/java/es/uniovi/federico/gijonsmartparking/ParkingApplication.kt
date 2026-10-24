@@ -8,6 +8,7 @@ import es.uniovi.federico.gijonsmartparking.data.AppDatabase
 import es.uniovi.federico.gijonsmartparking.data.AuthRepository
 import es.uniovi.federico.gijonsmartparking.data.NetworkModule
 import es.uniovi.federico.gijonsmartparking.data.ParkingRepository
+import es.uniovi.federico.gijonsmartparking.data.PendingSyncStore
 import es.uniovi.federico.gijonsmartparking.data.TokenManager
 import es.uniovi.federico.gijonsmartparking.notifications.ParkingMessagingService
 
@@ -39,7 +40,8 @@ class ParkingApplication : Application() {
             database.carLocationDao(),
             NetworkModule.retrofitService,
             backendApiService,
-            tokenManager
+            tokenManager,
+            PendingSyncStore(this)
         )
     }
 

@@ -30,7 +30,9 @@ python app.py
 ```
 
 Il server parte su `http://localhost:5000`. Il DB SQLite (`parking.db`) viene
-creato automaticamente al primo avvio.
+creato automaticamente al primo avvio. Il debugger di Flask è spento di default: per
+attivarlo in locale usa `FLASK_DEBUG=1 python app.py`. In produzione imposta sempre la
+variabile `SECRET_KEY` (firma dei token) e `GOOGLE_WEB_CLIENT_ID`.
 
 ## Endpoint
 

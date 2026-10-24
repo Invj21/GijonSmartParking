@@ -16,14 +16,10 @@
     <string name="home_all_desc">Consulta l\'elenco completo dei parcheggi delle Asturie</string>
     <string name="home_available_title">Disponibili ora</string>
     <string name="home_available_desc">Solo parcheggi aperti in questo momento</string>
-    <string name="home_available_count">%1$d disponibili ora</string>
     <string name="language_title">Lingua</string>
     <string name="language_english">English</string>
     <string name="language_italian">Italiano</string>
     <string name="cd_change_language">Cambia lingua</string>
-    <string name="parking_count_label">parcheggi trovati</string>
-    <string name="available_banner">%1$d parcheggi disponibili ora</string>
-    <string name="available_banner_at">%1$d parcheggi disponibili il %2$s</string>
     <string name="datetime_now">Ora</string>
     <string name="cd_pick_datetime">Scegli data e ora</string>
 
@@ -106,7 +102,6 @@
     <string name="title_favorites">Preferiti</string>
     <string name="home_favorites_title">Preferiti</string>
     <string name="home_favorites_desc">I tuoi parcheggi salvati</string>
-    <string name="home_favorites_count">%1$d salvati</string>
     <string name="favorites_empty">Non hai ancora parcheggi preferiti. Tocca il cuore di un parcheggio per salvarlo qui.</string>
     <string name="cd_favorite">Aggiungi o rimuovi dai preferiti</string>
 
@@ -188,4 +183,38 @@
     <string name="btn_save_profile">Salva</string>
     <string name="btn_go_home">Portami a casa</string>
     <string name="toast_profile_saved">Profilo salvato!</string>
+
+    <plurals name="home_parking_found">
+        <item quantity="one">%1$d parcheggio trovato</item>
+        <item quantity="many">%1$d parcheggi trovati</item>
+        <item quantity="other">%1$d parcheggi trovati</item>
+    </plurals>
+    <plurals name="home_available_count">
+        <item quantity="one">%1$d disponibile ora</item>
+        <item quantity="many">%1$d disponibili ora</item>
+        <item quantity="other">%1$d disponibili ora</item>
+    </plurals>
+    <plurals name="available_banner">
+        <item quantity="one">%1$d parcheggio disponibile ora</item>
+        <item quantity="many">%1$d parcheggi disponibili ora</item>
+        <item quantity="other">%1$d parcheggi disponibili ora</item>
+    </plurals>
+    <plurals name="available_banner_at">
+        <item quantity="one">%1$d parcheggio disponibile il %2$s</item>
+        <item quantity="many">%1$d parcheggi disponibili il %2$s</item>
+        <item quantity="other">%1$d parcheggi disponibili il %2$s</item>
+    </plurals>
+    <plurals name="home_favorites_count">
+        <item quantity="one">%1$d salvato</item>
+        <item quantity="many">%1$d salvati</item>
+        <item quantity="other">%1$d salvati</item>
+    </plurals>
+
+    <string name="location_permission_needed">Serve il permesso di posizione per salvare dove hai parcheggiato</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="search_empty">Nessun parcheggio corrisponde a ricerca o filtri</string>
+    <string name="auth_error_invalid_credentials">E-mail o password errata</string>
+    <string name="auth_error_email_taken">Questa e-mail è già registrata</string>
+    <string name="auth_error_invalid_email">Inserisci un indirizzo e-mail valido</string>
+    <string name="auth_error_network">Impossibile raggiungere il server, controlla la connessione e riprova</string>
 </resources>

@@ -99,7 +99,7 @@ data class GoogleAuthResponse(val token: String, val email: String)
 
 data class FavoriteDto(
     @Json(name = "parking_id") val parkingId: Long,
-    @Json(name = "created_at") val createdAt: String
+    @Json(name = "created_at") val createdAt: String? = null
 )
 
 data class AddFavoriteRequest(@Json(name = "parking_id") val parkingId: Long)

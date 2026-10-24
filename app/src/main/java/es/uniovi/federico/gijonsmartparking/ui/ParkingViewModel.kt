@@ -145,6 +145,14 @@ class ParkingViewModel(private val repository: ParkingRepository) : ViewModel() 
                 _isLoading.value = false
             }
         }
+        // preferiti e posizione dell'auto non aspettano il download (lento) del catalogo
+        viewModelScope.launch {
+            try {
+                repository.syncUserData()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     // --- Parte "trova la mia auto" ---

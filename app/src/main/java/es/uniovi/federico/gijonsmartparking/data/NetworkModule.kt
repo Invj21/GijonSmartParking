@@ -30,8 +30,22 @@ object NetworkModule {
         .build()
 
     val retrofitService: ParkingApiService by lazy {
+        val overpassClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                chain.proceed(
+                    chain.request().newBuilder()
+                        .header("User-Agent", "GijonSmartParking/1.0 (Universidad de Oviedo student project)")
+                        .build()
+                )
+            }
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(overpassClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(ParkingApiService::class.java)

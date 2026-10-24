@@ -80,7 +80,7 @@ class RegisterFragment : Fragment() {
                         NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
                     )
                 }
-                is AuthUiState.Error -> showError(state.message)
+                is AuthUiState.Error -> showError(AuthErrorMapper.localize(requireContext(), state.message))
                 else -> Unit
             }
         }

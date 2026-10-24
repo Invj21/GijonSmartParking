@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Looper
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.material.snackbar.Snackbar
 import es.uniovi.federico.gijonsmartparking.ParkingApplication
 import es.uniovi.federico.gijonsmartparking.R
 import es.uniovi.federico.gijonsmartparking.databinding.FragmentFindMyCarBinding
@@ -79,7 +81,21 @@ class FindMyCarFragment : Fragment(), SensorEventListener {
         if (isGranted) {
             getCurrentLocation()
             startCompassLocationUpdates()
+        } else {
+            showLocationPermissionNeeded()
         }
+    }
+
+    private fun showLocationPermissionNeeded() {
+        val root = _binding?.root ?: return
+        Snackbar.make(root, R.string.location_permission_needed, Snackbar.LENGTH_LONG)
+            .setAction(R.string.action_settings) {
+                startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData(Uri.fromParts("package", requireContext().packageName, null))
+                )
+            }
+            .show()
     }
 
     // launcher del permesso notifiche: se nego, il

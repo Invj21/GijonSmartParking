@@ -38,6 +38,13 @@ interface ParkingDao {
     @Query("DELETE FROM parking_table")
     suspend fun deleteAll()
 
+    // cancello e reinserisco in un'unica transazione: la lista non è mai vuota a metà
+    @Transaction
+    suspend fun replaceAll(parkingList: List<ParkingEntity>) {
+        deleteAll()
+        insertAll(parkingList)
+    }
+
     // --- Sincronizzazione preferiti col backend  ---
 
     @Query("UPDATE parking_table SET isFavorite = 0")
